@@ -1,5 +1,7 @@
 # Machine-Learning-Projects
-Restaurant POpularity by NLP Techniques
+
+Restaurant Popularity by NLP Techniques
+
 Objective of this project is to devise a machine learning algorithm based on Natural Language Prediction techniques which is confluence of Artificial Intelligence and linguistics. It involves intelligent analysis of written language. If we have a lot of data written in plain text and want to automatically get some insights from it, we need to use NLP techniques.
 
 
