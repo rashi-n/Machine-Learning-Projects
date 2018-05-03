@@ -1,5 +1,9 @@
 # Machine-Learning-Projects
 
+<B>SLR Model</B>
+
+This is a linear regression model to show relationship between Age and Salary in a given organization.
+
 Success of Ad Campaign by Population Deomgraphics
 
 To assess what category of population demographics ( age, gender, salary) may contribute more to success of new product launch here I have used K Nearest Search algorithm technique to predict the analytics.
