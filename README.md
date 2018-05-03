@@ -1,5 +1,9 @@
 # Machine-Learning-Projects
 
+Success of Ad Campaign by Population Deomgraphics
+
+To assess what category of population demographics ( age, gender, salary) may contribute more to success of new product launch here I have used K Nearest Search algorithm technique to predict the analytics.
+
 Salary Compensation by Position 
 
 Objective of this project was to devise a machine learning algorithm to baseline salary negotiations in corporate world using industry standards. Wide range of linear, non-linear regression models like Polynomial Regression model, Decision Tree and Random Forest Regression models were developed to check the validity of salary by given position level.
