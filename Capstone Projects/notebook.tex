@@ -474,7 +474,7 @@ using Box Plots
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}12}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x1a13bbdad0>
+{\color{outcolor}Out[{\color{outcolor}12}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x111d6cb50>
 \end{Verbatim}
             
     \begin{center}
@@ -552,7 +552,7 @@ the relationship between two features. Here we consider "count" vs
 "temp", "humidity", "windspeed".
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{corrMatt} \PY{o}{=} \PY{n}{stats}\PY{p}{[}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{temp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atemp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{casual}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{registered}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{humidity}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{windspeed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{total\PYZus{}count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{corrMatt} \PY{o}{=} \PY{n}{stats}\PY{p}{[}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{temp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{atemp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{casual}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{registered}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{humidity}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{windspeed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{total\PYZus{}count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
          \PY{n}{mask} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{corrMatt}\PY{p}{)}
          \PY{n}{mask}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{tril\PYZus{}indices\PYZus{}from}\PY{p}{(}\PY{n}{mask}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{False}
          \PY{n}{fig}\PY{p}{,}\PY{n}{ax}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{p}{)}
@@ -562,7 +562,7 @@ the relationship between two features. Here we consider "count" vs
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}15}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x10ec0b250>
+{\color{outcolor}Out[{\color{outcolor}14}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x111ef08d0>
 \end{Verbatim}
             
     \begin{center}
@@ -577,7 +577,7 @@ under Inferential statistics coming later in EDA. There is moderate
 collinearity between 'total\_count' and 'temp'(temperature)too.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{fig}\PY{p}{,}\PY{p}{(}\PY{n}{ax1}\PY{p}{,}\PY{n}{ax2}\PY{p}{,}\PY{n}{ax3}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{ncols}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{fig}\PY{p}{,}\PY{p}{(}\PY{n}{ax1}\PY{p}{,}\PY{n}{ax2}\PY{p}{,}\PY{n}{ax3}\PY{p}{)} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{ncols}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
          \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}size\PYZus{}inches}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}
          \PY{n}{sn}\PY{o}{.}\PY{n}{regplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{temp}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{total\PYZus{}count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{stats}\PY{p}{,}\PY{n}{ax}\PY{o}{=}\PY{n}{ax1}\PY{p}{)}
          \PY{n}{sn}\PY{o}{.}\PY{n}{regplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{windspeed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{total\PYZus{}count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{stats}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{ax2}\PY{p}{)}
@@ -586,7 +586,7 @@ collinearity between 'total\_count' and 'temp'(temperature)too.
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}16}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x1a1ce425d0>
+{\color{outcolor}Out[{\color{outcolor}15}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x10d84b110>
 \end{Verbatim}
             
     \begin{center}
@@ -600,7 +600,7 @@ volume(total\_count) vs 'temp' while negative relation with 'windspeed'
     Histogram to show volume of bike rental counts frequency
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{\PYZsh{}sn.set()}
+{\color{incolor}In [{\color{incolor}16}]:} \PY{c+c1}{\PYZsh{}sn.set()}
          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{)}
          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Bike Rental Count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequency}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
@@ -616,7 +616,7 @@ volume(total\_count) vs 'temp' while negative relation with 'windspeed'
     Beeswarm plot
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{sn}\PY{o}{.}\PY{n}{swarmplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{temp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y} \PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data} \PY{o}{=} \PY{n}{stats}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}17}]:} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{sn}\PY{o}{.}\PY{n}{swarmplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{temp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{y} \PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{data} \PY{o}{=} \PY{n}{stats}\PY{p}{)}
          
          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
@@ -631,7 +631,7 @@ volume(total\_count) vs 'temp' while negative relation with 'windspeed'
 Distribution Function
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{n}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{stats}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{n}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{stats}\PY{p}{)}
          \PY{k}{print}\PY{p}{(}\PY{n}{n}\PY{p}{)}
          \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
          \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)} 
@@ -659,7 +659,7 @@ Distribution Function
     { \hspace*{\fill} \\}
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}20}]:} \PY{c+c1}{\PYZsh{} Checking ECDF Distribution of Bike Rental Count across two years(2011 \PYZam{} 2012) and theoretical samples of data}
+{\color{incolor}In [{\color{incolor}19}]:} \PY{c+c1}{\PYZsh{} Checking ECDF Distribution of Bike Rental Count across two years(2011 \PYZam{} 2012) and theoretical samples of data}
          \PY{k}{def} \PY{n+nf}{ecdf}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{:}
              \PY{n}{x}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{data}\PY{p}{)}
              \PY{n}{n}\PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}
@@ -678,18 +678,18 @@ Distribution Function
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}20}]:} array([132.81220418, 251.00335526, 161.18402663, {\ldots}, 325.85950651,
+{\color{outcolor}Out[{\color{outcolor}19}]:} array([132.81220418, 251.00335526, 161.18402663, {\ldots}, 325.85950651,
                  40.67549713, 183.19979447])
 \end{Verbatim}
             
     
     \begin{verbatim}
-<matplotlib.figure.Figure at 0x1a1e7ac350>
+<matplotlib.figure.Figure at 0x1a1d0e8e50>
     \end{verbatim}
 
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}21}]:} \PY{c+c1}{\PYZsh{}find ecdf of data}
+{\color{incolor}In [{\color{incolor}20}]:} \PY{c+c1}{\PYZsh{}find ecdf of data}
          \PY{n}{x\PYZus{}count}\PY{p}{,} \PY{n}{y\PYZus{}count} \PY{o}{=} \PY{n}{ecdf}\PY{p}{(}\PY{n}{stats}\PY{o}{.}\PY{n}{total\PYZus{}count}\PY{p}{)}
          \PY{n}{x\PYZus{}theor}\PY{p}{,} \PY{n}{y\PYZus{}theor} \PY{o}{=} \PY{n}{ecdf}\PY{p}{(}\PY{n}{samples}\PY{p}{)}
          
@@ -720,21 +720,21 @@ sets to compare distribution. We see how closely the real data set
 follows the theoretical normal distribution curve.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{75}\PY{p}{,} \PY{l+m+mi}{90}\PY{p}{,} \PY{l+m+mi}{98}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{75}\PY{p}{,} \PY{l+m+mi}{90}\PY{p}{,} \PY{l+m+mi}{98}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}22}]:} array([ 40. , 142. , 281. , 451.2, 690. , 977. ])
+{\color{outcolor}Out[{\color{outcolor}21}]:} array([ 40. , 142. , 281. , 451.2, 690. , 977. ])
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{stats}\PY{p}{,} \PY{n}{column}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}22}]:} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{stats}\PY{p}{,} \PY{n}{column}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}23}]:} array([[<matplotlib.axes.\_subplots.AxesSubplot object at 0x1a1e7ac810>]],
+{\color{outcolor}Out[{\color{outcolor}22}]:} array([[<matplotlib.axes.\_subplots.AxesSubplot object at 0x1a1d2db910>]],
                dtype=object)
 \end{Verbatim}
             
@@ -746,49 +746,49 @@ follows the theoretical normal distribution curve.
     The sampling distribution is the form of a normal distribution.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}24}]:} 32899.56793087754
+{\color{outcolor}Out[{\color{outcolor}23}]:} 32899.56793087754
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}25}]:} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}25}]:} 181.38238043116962
+{\color{outcolor}Out[{\color{outcolor}24}]:} 181.38238043116962
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}26}]:} \PY{c+c1}{\PYZsh{}Covariance how two quantities vary together}
+{\color{incolor}In [{\color{incolor}25}]:} \PY{c+c1}{\PYZsh{}Covariance how two quantities vary together}
          \PY{n}{np}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{temp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}26}]:} array([[3.29014611e+04, 1.41375997e+01],
+{\color{outcolor}Out[{\color{outcolor}25}]:} array([[3.29014611e+04, 1.41375997e+01],
                 [1.41375997e+01, 3.70778598e-02]])
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}27}]:} \PY{c+c1}{\PYZsh{}Pearson Coorrelation Coefficient}
+{\color{incolor}In [{\color{incolor}26}]:} \PY{c+c1}{\PYZsh{}Pearson Coorrelation Coefficient}
          \PY{n}{np}\PY{o}{.}\PY{n}{corrcoef}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{temp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}27}]:} array([[1.        , 0.40477228],
+{\color{outcolor}Out[{\color{outcolor}26}]:} array([[1.        , 0.40477228],
                 [0.40477228, 1.        ]])
 \end{Verbatim}
             
      Is the sample size large? Are the observations independent?
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}28}]:} \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{We have}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{stats}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{samples across}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{stats}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{features.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}27}]:} \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{We have}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{stats}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{samples across}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{stats}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{features.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
          \PY{c+c1}{\PYZsh{} confirmed here: https://ww2.amstat.org/publications/jse/datasets/normtemp.txt}
          
          \PY{k}{print}\PY{p}{(}\PY{n}{stats}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{season}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{stats}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}\PY{p}{)}
@@ -849,7 +849,7 @@ season
     Visualizing ECDF using bootstrap samples
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}28}]:} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{:}
              \PY{c+c1}{\PYZsh{} Generate bootstrap sample: bs\PYZus{}sample}
              \PY{n}{bs\PYZus{}sample} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{stats}\PY{p}{)}\PY{p}{)}
          
@@ -890,7 +890,7 @@ bootstrap sampling allows probabilistic descriptions of data.
      Step 1: Build a function to create a bootstrap replicate
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}30}]:} \PY{k}{def} \PY{n+nf}{bootstrap\PYZus{}replicate\PYZus{}1d}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{bootstrap\PYZus{}replicate\PYZus{}1d}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{)}\PY{p}{:}
              \PY{k}{return} \PY{n}{func}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
          \PY{c+c1}{\PYZsh{}np.random.choice() works on linear model}
 \end{Verbatim}
@@ -899,7 +899,7 @@ bootstrap sampling allows probabilistic descriptions of data.
      Step 2: Another function to generate multiple such bootstrap samples
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}31}]:} \PY{k}{def} \PY{n+nf}{draw\PYZus{}bs\PYZus{}reps}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}30}]:} \PY{k}{def} \PY{n+nf}{draw\PYZus{}bs\PYZus{}reps}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Draw bootstrap replicates.\PYZdq{}\PYZdq{}\PYZdq{}}
          
              \PY{c+c1}{\PYZsh{} Initialize array of replicates: bs\PYZus{}replicates}
@@ -916,7 +916,7 @@ bootstrap sampling allows probabilistic descriptions of data.
      Step 3: Plot the histogram for bootstrap replicates
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}32}]:} \PY{c+c1}{\PYZsh{} Take 10,000 bootstrap replicates of the mean: bs\PYZus{}replicates}
+{\color{incolor}In [{\color{incolor}31}]:} \PY{c+c1}{\PYZsh{} Take 10,000 bootstrap replicates of the mean: bs\PYZus{}replicates}
          \PY{n}{bs\PYZus{}replicates} \PY{o}{=} \PY{n}{draw\PYZus{}bs\PYZus{}reps}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{,} \PY{l+m+mi}{10000}\PY{p}{)}
          
          \PY{c+c1}{\PYZsh{} Compute and print SEM Standard Error of the Mean}
@@ -970,12 +970,12 @@ of the bootstrap replicates of the mean is Normal.
 percentile of bootstrap replicates is stored as bs\_replicates
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{97.5}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{97.5}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}33}]:} array([186.82940186, 192.19181915])
+{\color{outcolor}Out[{\color{outcolor}32}]:} array([186.82940186, 192.19181915])
 \end{Verbatim}
             
      The above steps may be repeated to show for Variance function as well
@@ -983,7 +983,7 @@ percentile of bootstrap replicates is stored as bs\_replicates
      Extending Confidence Interval Concept to Pairs Bootstrap
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}34}]:} \PY{c+c1}{\PYZsh{}Finding pairs bootstrap for slope \PYZam{} intercept of a linear function between Bike REntal Count and Registered User Type}
+{\color{incolor}In [{\color{incolor}33}]:} \PY{c+c1}{\PYZsh{}Finding pairs bootstrap for slope \PYZam{} intercept of a linear function between Bike REntal Count and Registered User Type}
          \PY{k}{def} \PY{n+nf}{draw\PYZus{}bs\PYZus{}pairs\PYZus{}linreg}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Perform pairs bootstrap for linear regression.\PYZdq{}\PYZdq{}\PYZdq{}}
          
@@ -1026,7 +1026,7 @@ percentile of bootstrap replicates is stored as bs\_replicates
     { \hspace*{\fill} \\}
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}45}]:} \PY{c+c1}{\PYZsh{} Generate array of x\PYZhy{}values for bootstrap lines: x}
+{\color{incolor}In [{\color{incolor}34}]:} \PY{c+c1}{\PYZsh{} Generate array of x\PYZhy{}values for bootstrap lines: x}
          \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
          
          \PY{c+c1}{\PYZsh{} Plot the bootstrap lines}
@@ -1052,11 +1052,20 @@ percentile of bootstrap replicates is stored as bs\_replicates
     
     Hypothesis Testing
 
-     Null Hypothesis- Assuming User Type Casual \& Registered carry similar
-influence on Bike Rental Count
+     Null Hypothesis- There is no significant difference between registered
+and casual user type mean on Bike Rental Count.
+
+H0:μregistered−μcasual=0
+
+Significance Level: 95\% Confidence α=0.05
+
+ Alternate Hypothesis -
+
+There is significant difference between registered and casual user type
+mean on Bike Rental Count HA : μregistered−μcasual != 0
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}36}]:} \PY{k}{def} \PY{n+nf}{permutation\PYZus{}sample}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}35}]:} \PY{k}{def} \PY{n+nf}{permutation\PYZus{}sample}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{:}
              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Generate a permutation sample from two data sets.\PYZdq{}\PYZdq{}\PYZdq{}}
          
              \PY{c+c1}{\PYZsh{} Concatenate the data sets: data}
@@ -1129,7 +1138,7 @@ not the right estimate of mean
      EDA of Bike Rental Count versus Registered User Type
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}37}]:} \PY{k}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{corrcoef}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{registered}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}36}]:} \PY{k}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{corrcoef}\PY{p}{(}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{registered}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
 
@@ -1140,7 +1149,7 @@ not the right estimate of mean
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{x}\PY{o}{=}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{registered}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{x}\PY{o}{=}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{registered}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
          \PY{n}{y}\PY{o}{=}\PY{n}{stats}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
          \PY{n}{\PYZus{}}\PY{o}{=}\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{marker} \PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle} \PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
 \end{Verbatim}
@@ -1160,7 +1169,7 @@ be continued in use for further inferential statistics below.
 initialize RSS for all possible values of slope(a), compute rss \& plot
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{polyfit}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{a}\PY{p}{,} \PY{n}{b}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{polyfit}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{slope =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{a}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bike Rental Count / percent registerd User Type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{intercept =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{b}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Bike Rental Count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
 \end{Verbatim}
@@ -1173,7 +1182,7 @@ initialize RSS for all possible values of slope(a), compute rss \& plot
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}40}]:} \PY{c+c1}{\PYZsh{}Theoretical linear function t=a*s + b }
+{\color{incolor}In [{\color{incolor}39}]:} \PY{c+c1}{\PYZsh{}Theoretical linear function t=a*s + b }
          \PY{n}{s} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
          \PY{n}{t}\PY{o}{=} \PY{n}{a}\PY{o}{*}\PY{n}{s} \PY{o}{+}\PY{n}{b}
          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{s}\PY{p}{,}\PY{n}{t}\PY{p}{)}
@@ -1187,14 +1196,14 @@ initialize RSS for all possible values of slope(a), compute rss \& plot
     { \hspace*{\fill} \\}
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}46}]:} \PY{c+c1}{\PYZsh{}computing RSS}
+{\color{incolor}In [{\color{incolor}40}]:} \PY{c+c1}{\PYZsh{}computing RSS}
          \PY{n}{a\PYZus{}vals} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{200}\PY{p}{)}
          \PY{n}{rss}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty\PYZus{}like}\PY{p}{(}\PY{n}{a\PYZus{}vals}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}42}]:} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{a} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{a\PYZus{}vals}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}41}]:} \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{a} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{a\PYZus{}vals}\PY{p}{)}\PY{p}{:}
              \PY{n}{rss}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{(}\PY{n}{y} \PY{o}{\PYZhy{}} \PY{n}{a} \PY{o}{*} \PY{n}{x} \PY{o}{\PYZhy{}}\PY{n}{b}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
              
          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{a\PYZus{}vals}\PY{p}{,} \PY{n}{rss}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
@@ -1204,7 +1213,7 @@ initialize RSS for all possible values of slope(a), compute rss \& plot
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}42}]:} Text(0,0.5,u'sum of square of residuals')
+{\color{outcolor}Out[{\color{outcolor}41}]:} Text(0,0.5,u'sum of square of residuals')
 \end{Verbatim}
             
     \begin{center}
@@ -1220,6 +1229,233 @@ continuous function and so ECDF graphs to show Bike Rental Count
 distribution by User Types is correct and Null hypothesis i.e. User Type
 Casual \& Registered carry similar influence on Bike Rental Count may be
 rejected.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{c+c1}{\PYZsh{} Save temperatures filtered by gender:}
+         \PY{n}{reg\PYZus{}count} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{registered}
+         \PY{n}{casual\PYZus{}count} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{casual}
+         
+         \PY{c+c1}{\PYZsh{} Sample Sizes:}
+         \PY{n}{n\PYZus{}reg} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{reg\PYZus{}count}\PY{p}{)}
+         \PY{n}{n\PYZus{}casual} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{casual\PYZus{}count}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Sample Means:}
+         \PY{n}{M\PYZus{}reg} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{reg\PYZus{}count}\PY{p}{)}
+         \PY{n}{M\PYZus{}casual} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{casual\PYZus{}count}\PY{p}{)}
+         
+         \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Registered Sample Size:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n\PYZus{}reg}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Registered User Type Mean:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{M\PYZus{}reg}\PY{p}{)}
+         \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Casual Sample Size:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{n\PYZus{}casual}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{Casual User Type Mean:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{M\PYZus{}casual}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+('Registered Sample Size:', 17379, '\textbackslash{}nRegistered User Type Mean:', 153.78686920996606)
+('\textbackslash{}nCasual Sample Size:', 17379, '\textbackslash{}nCasual User Type Mean:', 35.67621842453536)
+
+    \end{Verbatim}
+
+    There is a difference between the mean of registered and casual User
+Type in the sample data, but a statistical analysis will help determine
+if the difference is significant. Null Hypothesis: There is no
+significant difference between registered and casual user type mean on
+Bike Rental Count. \[H_0: \mu_{registered} - \mu_{casual} = 0\]
+Significance Level: 95\% Confidence \[\alpha = 0.05\]
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{c+c1}{\PYZsh{} Define permutation functions:}
+         
+         \PY{k}{def} \PY{n+nf}{permutation\PYZus{}sample}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Return a permutation sample from two data sets.\PYZdq{}\PYZdq{}\PYZdq{}}
+         
+             \PY{c+c1}{\PYZsh{} Concatenate the data sets:}
+             \PY{n}{data} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} Permute the concatenated array:}
+             \PY{n}{permuted\PYZus{}data} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{permutation}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} Split the permuted array into two samples:}
+             \PY{n}{permutation\PYZus{}sample\PYZus{}1} \PY{o}{=} \PY{n}{permuted\PYZus{}data}\PY{p}{[}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data1}\PY{p}{)}\PY{p}{]}
+             \PY{n}{permutation\PYZus{}sample\PYZus{}2} \PY{o}{=} \PY{n}{permuted\PYZus{}data}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data1}\PY{p}{)}\PY{p}{:}\PY{p}{]}
+         
+             \PY{k}{return} \PY{n}{permutation\PYZus{}sample\PYZus{}1}\PY{p}{,} \PY{n}{permutation\PYZus{}sample\PYZus{}2}
+         
+         
+         \PY{k}{def} \PY{n+nf}{draw\PYZus{}permutation\PYZus{}replicates}\PY{p}{(}\PY{n}{data\PYZus{}1}\PY{p}{,} \PY{n}{data\PYZus{}2}\PY{p}{,} \PY{n}{func}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Draw multiple permutation replicates.\PYZdq{}\PYZdq{}\PYZdq{}}
+         
+             \PY{c+c1}{\PYZsh{} Initialize array of permutation replicates:}
+             \PY{n}{permutation\PYZus{}replicates} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{size}\PY{p}{)}
+         
+             \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{:}
+                 \PY{c+c1}{\PYZsh{} Generate permutation samples:}
+                 \PY{n}{permutation\PYZus{}sample\PYZus{}1}\PY{p}{,} \PY{n}{permutation\PYZus{}sample\PYZus{}2} \PY{o}{=} \PY{n}{permutation\PYZus{}sample}\PY{p}{(}\PY{n}{data\PYZus{}1}\PY{p}{,} \PY{n}{data\PYZus{}2}\PY{p}{)}
+         
+                 \PY{c+c1}{\PYZsh{} Compute the test statistic:}
+                 \PY{n}{permutation\PYZus{}replicates}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{func}\PY{p}{(}\PY{n}{permutation\PYZus{}sample\PYZus{}1}\PY{p}{,} \PY{n}{permutation\PYZus{}sample\PYZus{}2}\PY{p}{)}
+         
+             \PY{k}{return} \PY{n}{permutation\PYZus{}replicates}
+         
+         
+         \PY{k}{def} \PY{n+nf}{difference\PYZus{}of\PYZus{}means}\PY{p}{(}\PY{n}{data\PYZus{}1}\PY{p}{,} \PY{n}{data\PYZus{}2}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Return the difference in means of two arrays.\PYZdq{}\PYZdq{}\PYZdq{}}
+         
+             \PY{c+c1}{\PYZsh{} The difference of means of data\PYZus{}1, data\PYZus{}2:}
+             \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{data\PYZus{}1}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{data\PYZus{}2}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{c+c1}{\PYZsh{} Seed the random number generator:}
+         \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{)}
+         
+         
+         \PY{c+c1}{\PYZsh{} Compute difference of means:}
+         \PY{n}{empirical\PYZus{}difference} \PY{o}{=} \PY{n}{difference\PYZus{}of\PYZus{}means}\PY{p}{(}\PY{n}{reg\PYZus{}count}\PY{p}{,} \PY{n}{casual\PYZus{}count}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Draw 10,000 permutation replicates:}
+         \PY{n}{permutation\PYZus{}replicates} \PY{o}{=} \PY{n}{draw\PYZus{}permutation\PYZus{}replicates}\PY{p}{(}\PY{n}{reg\PYZus{}count}\PY{p}{,} \PY{n}{casual\PYZus{}count}\PY{p}{,} \PY{n}{difference\PYZus{}of\PYZus{}means}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{10000}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Compute fraction of replicates that are greater than the observed difference of means:}
+         \PY{n}{p} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{permutation\PYZus{}replicates} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{empirical\PYZus{}difference}\PY{p}{)} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{permutation\PYZus{}replicates}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Print the results:}
+         \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Difference of Means}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{empirical\PYZus{}difference}\PY{p}{)}
+         \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p\PYZhy{}value =}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+('Difference of Means', 118.11065078543069)
+('p-value =', 0)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{stats}
+         \PY{c+c1}{\PYZsh{} Save results of a two sample t\PYZhy{}test:}
+         \PY{n}{t} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{ttest\PYZus{}ind}\PY{p}{(}\PY{n}{reg\PYZus{}count}\PY{p}{,} \PY{n}{casual\PYZus{}count}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+         \PY{n}{p} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{ttest\PYZus{}ind}\PY{p}{(}\PY{n}{reg\PYZus{}count}\PY{p}{,} \PY{n}{casual\PYZus{}count}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+         
+         \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{t\PYZhy{}statistic:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{t}\PY{p}{)}
+         \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p\PYZhy{}value:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{p}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+('t-statistic:', 97.81332643791566)
+('p-value:', 0.0)
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{c+c1}{\PYZsh{} Print the quantiles of the t\PYZhy{}distribution corresponding to}
+         \PY{c+c1}{\PYZsh{} confidence level and degrees of freedom:}
+         \PY{k}{print}\PY{p}{(}\PY{p}{(}\PY{n}{stats}\PY{o}{.}\PY{n}{t}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{n}{q}\PY{o}{=}\PY{l+m+mf}{0.025}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{l+m+mi}{65}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{n}{stats}\PY{o}{.}\PY{n}{t}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{n}{q}\PY{o}{=}\PY{l+m+mf}{0.975}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{l+m+mi}{65}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(-1.9977296536259739, 1.9977296536259734)
+
+    \end{Verbatim}
+
+    A two-sample t-test returned a t-statistic of 2.29 and p-value of 0.024,
+so here too, the null hypothesis is rejected. The difference in User
+Type count between Registered and Casual, though significant, is not
+extreme. Registered tend to have a slightly higher Count.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{c+c1}{\PYZsh{}Importing the dataset}
+         \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hour.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}64}]:} \PY{n}{df}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{instant}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rec\PYZus{}id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dteday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{datetime}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{holiday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}holiday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{workingday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}workingday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weathersit}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weather\PYZus{}condition}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hum}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{humidity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mnth}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{month}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cnt}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}count}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hour}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                                \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yr}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}67}]:} \PY{c+c1}{\PYZsh{}type casting the attributes}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{datetime}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{to\PYZus{}datetime}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{datetime}\PY{p}{)}\PY{c+c1}{\PYZsh{}dae time conversion}
+         \PY{c+c1}{\PYZsh{} categorical variables}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{season}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{season}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}holiday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{is\PYZus{}holiday}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weekday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{weekday}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{weather\PYZus{}condition}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{weather\PYZus{}condition}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{is\PYZus{}workingday}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{is\PYZus{}workingday}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{month}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{month}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{year}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{hour}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{hour}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{category}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}70}]:} \PY{c+c1}{\PYZsh{} Define a function to compute the CDF:}
+         
+         \PY{k}{def} \PY{n+nf}{cdf}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{:}
+             \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Compute CDF for a one\PYZhy{}dimensional array of measurements.\PYZdq{}\PYZdq{}\PYZdq{}}
+         
+             \PY{c+c1}{\PYZsh{} Number of data points:}
+             \PY{n}{n} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} x\PYZhy{}data for the CDF:}
+             \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+         
+             \PY{c+c1}{\PYZsh{} y\PYZhy{}data for the CDF:}
+             \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{n}{n}
+         
+             \PY{k}{return} \PY{n}{x}\PY{p}{,} \PY{n}{y}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}71}]:} \PY{c+c1}{\PYZsh{} Compute percentiles:}
+         \PY{n}{percentile} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{75}\PY{p}{]}\PY{p}{)}
+         \PY{n}{reg\PYZus{}percentiles} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{registered}\PY{p}{,} \PY{n}{percentile}\PY{p}{)}
+         \PY{n}{casual\PYZus{}percentiles} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{casual}\PY{p}{,} \PY{n}{percentile}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Compute ECDFs:}
+         \PY{n}{regx\PYZus{}count}\PY{p}{,} \PY{n}{regy\PYZus{}count} \PY{o}{=} \PY{n}{cdf}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{registered}\PY{p}{)}
+         \PY{n}{casualx\PYZus{}count}\PY{p}{,} \PY{n}{casualy\PYZus{}count} \PY{o}{=} \PY{n}{cdf}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{casual}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Plot both ECDFs on the same plot:}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{regx\PYZus{}count}\PY{p}{,} \PY{n}{regy\PYZus{}count}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{casualx\PYZus{}count}\PY{p}{,} \PY{n}{casualy\PYZus{}count}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Overlay percentiles on each plot:}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{reg\PYZus{}percentiles}\PY{p}{,} \PY{n}{percentile}\PY{o}{/}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{casual\PYZus{}percentiles}\PY{p}{,} \PY{n}{percentile}\PY{o}{/}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{X}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{black}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Label axes and add legend and a title:}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{User Type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Registered User Type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Casual User Type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{25\PYZdl{}\PYZca{}\PYZob{}th\PYZcb{}\PYZdl{}, 50\PYZdl{}\PYZca{}\PYZob{}th\PYZcb{}\PYZdl{}, 75\PYZdl{}\PYZca{}\PYZob{}th\PYZcb{}\PYZdl{} Percentiles}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{center right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Distribution of Registered and Casual User Type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Save and display the plots:}
+         \PY{c+c1}{\PYZsh{}plt.savefig(\PYZsq{}reports/figures/cdf\PYZus{}female\PYZus{}male\PYZus{}temps.png\PYZsq{})}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_91_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Hence by above plot, we may reject the Null hypothesis since there is
+significant difference between Bike Rental Count distribution of
+Registered and Casual User Type.
 
 
     % Add a bibliography block to the postdoc
