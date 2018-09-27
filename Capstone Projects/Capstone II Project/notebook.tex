@@ -141,7 +141,7 @@
     \def\gt{>}
     \def\lt{<}
     % Document parameters
-    \title{EDA \& Inferential Statistics II}
+    \title{CSII In-Depth Analysis}
     
     
     
@@ -282,16 +282,18 @@
     
     Introduction: Home Credit Default Risk Competition
 
-    In this notebook, we will take an initial look at the Home Credit
-default risk machine learning competition currently hosted on Kaggle.
-The objective of this competition is to use historical loan application
-data to predict whether or not an applicant will be able to repay a
-loan. This is a standard supervised classification task:
-
-Supervised: The labels are included in the training data and the goal is
-to train a model to learn to predict the labels from the features
-Classification: The label is a binary variable, 0 (will repay loan on
-time), 1 (will have difficulty repaying loan)
+    In this notebook, I am analyzing dataset posted on Kaggle 'Home Credit
+default Risk' machine learning competition. As part of this competition,
+the client of this project 'Home Credit Groups' wants Kagglers to come
+up with enhanced, optimized predictive Machine Learning Model that can
+more accurately 'Predict how capable each applicant is of repaying
+loan'. Client has shared historical loan application data that has
+target label signifying if applicant may be able to repay loan. This is
+a supervised machine learning classification problem for this is a
+labeled data and there is need to identify to which of a set of
+categories (sub-populations) a new observation belongs, on the basis of
+a training set of data containing observations (or instances) whose
+category membership is known.
 
     Objective
 
@@ -299,18 +301,15 @@ time), 1 (will have difficulty repaying loan)
 
     Data
 
-    The data is provided by Home Credit, a service dedicated to provided
-lines of credit (loans) to the unbanked population. Predicting whether
-or not a client will repay a loan or have difficulty is a critical
-business need, and Home Credit is hosting this competition on Kaggle to
-see what sort of models the machine learning community can develop to
-help them in this task.
+    The data is posted by Home Credit Solutions group on Kaggle s given
+here: https://www.kaggle.com/c/home-credit-default-risk
 
-application\_train/application\_test: the main training and testing data
-with information about each loan application at Home Credit. Every loan
-has its own row and is identified by the feature SK\_ID\_CURR. The
-training application data comes with the TARGET indicating 0: the loan
-was repaid or 1: the loan was not repaid.
+On analysis of all the datasets given, there is one main table
+application\_train/application\_test
+
+This contains each applicant record as row with unique id (SK\_ID\_CURR)
+and is identified by the feature . The data has the TARGET variable
+indicating 0: the loan was repaid or 1: the loan was not repaid.
 
     Data Wrangling
 
@@ -687,14 +686,16 @@ was repaid or 1: the loan was not repaid.
     \end{center}
     { \hspace*{\fill} \\}
     
-    From this information, we see this is an imbalanced class
-problem(http://www.chioka.in/class-imbalance-problem/). There are far
-more loans that were repaid on time than loans that were not repaid.
-Once we get into more sophisticated machine learning models, we can
-weight the classes by their representation in the data to reflect this
-imbalance.
+    Per this graph, I do see Class Imbalance problem for majority of class
+is indicating '0' risk while very few applicants or records under '1'
+risk. I will work to resolve this problem during in-depth machine
+learning engineering phase as now I proceed to further Data Munging
+steps: 1. Missing Value Identification 2. Data Type Conversions 3.
+Feature Engineering Categorical Variables 4. Removing Rows with Missing
+Values \& Baselining Model 5. Replacing Missing Values with NaN followed
+by Imputation and Baselining Model 
 
-    Examine Missing Values
+    Missing Value Identification
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{\PYZsh{} Function to calculate missing values by column\PYZsh{} Funct }
@@ -728,8 +729,7 @@ imbalance.
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{\PYZsh{} Missing values statistics}
-         \PY{n}{missing\PYZus{}values} \PY{o}{=} \PY{n}{missing\PYZus{}values\PYZus{}table}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{missing\PYZus{}values} \PY{o}{=} \PY{n}{missing\PYZus{}values\PYZus{}table}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
          \PY{n}{missing\PYZus{}values}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}
 \end{Verbatim}
 
@@ -764,23 +764,14 @@ There are 67 columns that have missing values.
          LANDAREA\_MODE                     182590               59.4
 \end{Verbatim}
             
-    When it comes time to build our machine learning models, we will have to
-fill in these missing values (known as imputation). In later work, we
-will use models such as XGBoost that can handle missing values with no
-need for imputation. Another option would be to drop columns with a high
-percentage of missing values, although it is impossible to know ahead of
-time if these columns will be helpful to our model. Therefore, we will
-keep all of the columns for now.
+    Based on the numerous missing value records as guessed during
+preliminary Data Munging steps, I will approach this problem using
+either 'Removing Rows with Missing Value' strategy or 'Replacing Nulls
+with NaN and Running Imputation Machine Learning' strategy.
 
-    Column Types
+    Data Types Conversions (if any)
 
-    Let's look at the number of columns of each data type. \texttt{int64}
-and \texttt{float64} are numeric variables
-(\href{https://stats.stackexchange.com/questions/206/what-is-the-difference-between-discrete-data-and-continuous-data}{which
-can be either discrete or continuous}). \texttt{object} columns contain
-strings and are
-\href{http://support.minitab.com/en-us/minitab-express/1/help-and-how-to/modeling-statistics/regression/supporting-topics/basics/what-are-categorical-discrete-and-continuous-variables/}{categorical
-features.} .
+    Analysing the features next for their data types and possibly data:
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{\PYZsh{} Number of each type of column}
@@ -795,8 +786,7 @@ features.} .
          dtype: int64
 \end{Verbatim}
             
-    Let's now look at the number of unique entries in each of the object
-(categorical) columns.
+    Examining unique entries for Categorical variables:
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{\PYZsh{} Number of unique classes in each object column}
@@ -824,70 +814,16 @@ features.} .
          dtype: int64
 \end{Verbatim}
             
-    Most of the categorical variables have a relatively small number of
-unique entries. We will need to find a way to deal with these
-categorical variables!
+    The categorical variables with less number of classes (\textless{}=2)
+may be label encoded while remaining I may use One Hot encoding
+technique. The reason why we have to feature engineer Categorical
+variables is because many Machine Learning Model do not perform well
+with Categorical variables since categorical variable may have too many
+levels and pulls down performance level of the model. Also it is not
+necessary that all the levels always occur in the records, only few may
+occur and make any impact on model fit.
 
-    Encoding Categorical Variables
-
-    Before we go any further, we need to deal with pesky categorical
-variables. A machine learning model unfortunately cannot deal with
-categorical variables (except for some models such as LightGBM).
-Therefore, we have to find a way to encode (represent) these variables
-as numbers before handing them off to the model. There are two main ways
-to carry out this process:
-
-Label encoding: assign each unique category in a categorical variable
-with an integer. No new columns are created. An example is shown below
-image
-\includegraphics{https://raw.githubusercontent.com/WillKoehrsen/Machine-Learning-Projects/master/label_encoding.png}
-
-One-hot encoding: create a new column for each unique category in a
-categorical variable. Each observation recieves a 1 in the column for
-its corresponding category and a 0 in all other new columns. image
-\includegraphics{https://raw.githubusercontent.com/WillKoehrsen/Machine-Learning-Projects/master/one_hot_encoding.png}
-
-The problem with label encoding is that it gives the categories an
-arbitrary ordering. The value assigned to each of the categories is
-random and does not reflect any inherent aspect of the category. In the
-example above, programmer recieves a 4 and data scientist a 1, but if we
-did the same process again, the labels could be reversed or completely
-different. The actual assignment of the integers is arbitrary.
-Therefore, when we perform label encoding, the model might use the
-relative value of the feature (for example programmer = 4 and data
-scientist = 1) to assign weights which is not what we want. If we only
-have two unique values for a categorical variable (such as Male/Female),
-then label encoding is fine, but for more than 2 unique categories,
-one-hot encoding is the safe option.
-
-There is some debate about the relative merits of these approaches, and
-some models can deal with label encoded categorical variables with no
-issues. Here is a good Stack Overflow discussion. I think (and this is
-just a personal opinion) for categorical variables with many classes,
-one-hot encoding is the safest approach because it does not impose
-arbitrary values to categories. The only downside to one-hot encoding is
-that the number of features (dimensions of the data) can explode with
-categorical variables with many categories. To deal with this, we can
-perform one-hot encoding followed by PCA or other dimensionality
-reduction methods to reduce the number of dimensions (while still trying
-to preserve information).
-
-In this notebook, we will use Label Encoding for any categorical
-variables with only 2 categories and One-Hot Encoding for any
-categorical variables with more than 2 categories. This process may need
-to change as we get further into the project, but for now, we will see
-where this gets us. (We will also not use any dimensionality reduction
-in this notebook but will explore in future iter
-
-    Label Encoding and One-Hot Encoding
-
-    Let's implement the policy described above: for any categorical variable
-(\texttt{dtype\ ==\ object}) with 2 unique categories, we will use label
-encoding, and for any categorical variable with more than 2 unique
-categories, we will use one-hot encoding.
-
-For label encoding, we use the Scikit-Learn \texttt{LabelEncoder} and
-for one-hot encoding, the pandas \texttt{get\_dummies(df)} function.
+    Feature Engineering Categorical Variables
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}15}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.preprocessing} \PY{k+kn}{import} \PY{n}{LabelEncoder}
@@ -934,18 +870,13 @@ for one-hot encoding, the pandas \texttt{get\_dummies(df)} function.
 
     \end{Verbatim}
 
-    Aligning Training and Testing Data
+    Missing Value Handling
 
-    Aligning Training and Testing Data There need to be the same features
-(columns) in both the training and testing data. One-hot encoding has
-created more columns in the training data because there were some
-categorical variables with categories not represented in the testing
-data. To remove the columns in the training data that are not in the
-testing data, we need to align the dataframes. First we extract the
-target column from the training data (because this is not in the testing
-data but we need to keep this information). When we do the align, we
-must make sure to set axis = 1 to align the dataframes based on the
-columns and not on the rows!
+    After feature engineering categorical variables in the dataset now we
+have more columns in the traning (primary) dataset and test dataset
+since does not have target label so at this point I align the feature
+set in the two datasets before we take further steps on baselining
+model.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}17}]:} \PY{n}{train\PYZus{}labels} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
@@ -968,94 +899,22 @@ columns and not on the rows!
     \end{Verbatim}
 
     The training and testing datasets now have the same features which is
-required for machine learning. The number of features has grown
-significantly due to one-hot encoding. At some point we probably will
-want to try dimensionality reduction (removing features that are not
-relevant) to reduce the size of the datasets.
+required for machine learning
+
+    Exploring Data a Bit Prior Missing Value
+
+    Anomalies/Outliers
+
+Here may check for if any outliers or anomalies in data by the features
+given:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}18}]:} \PY{c+c1}{\PYZsh{} \PYZsh{} Missing Value Strategy}
-         \PY{c+c1}{\PYZsh{} from sklearn.ensemble import RandomForestRegressor}
-         \PY{c+c1}{\PYZsh{} from sklearn.pipeline import Pipeline}
-         \PY{c+c1}{\PYZsh{} from sklearn.preprocessing import Imputer}
-         \PY{c+c1}{\PYZsh{} from sklearn.model\PYZus{}selection import cross\PYZus{}val\PYZus{}score}
-         
-         \PY{c+c1}{\PYZsh{} rng = np.random.RandomState(0)}
-         
-         \PY{c+c1}{\PYZsh{} \PYZsh{} X\PYZus{}full, y\PYZus{}full = df\PYZus{}train.iloc[:, :\PYZhy{}1], df\PYZus{}train.iloc[:, \PYZhy{}1]}
-         \PY{c+c1}{\PYZsh{} n\PYZus{}samples = X\PYZus{}full.shape[0]}
-         \PY{c+c1}{\PYZsh{} n\PYZus{}features = X\PYZus{}full.shape[1]}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}19}]:} \PY{c+c1}{\PYZsh{} \PYZsh{} Estimate the score on the entire dataset, with no missing values}
-         \PY{c+c1}{\PYZsh{} estimator = RandomForestRegressor(random\PYZus{}state=0, n\PYZus{}estimators=100)}
-         \PY{c+c1}{\PYZsh{} score = cross\PYZus{}val\PYZus{}score(estimator, X\PYZus{}full, y\PYZus{}full).mean()}
-         \PY{c+c1}{\PYZsh{} print(\PYZdq{}Score with the entire dataset = \PYZpc{}.2f\PYZdq{} \PYZpc{} score)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}20}]:} \PY{c+c1}{\PYZsh{} \PYZsh{} Add missing values in 75\PYZpc{} of the lines}
-         \PY{c+c1}{\PYZsh{} missing\PYZus{}rate = 0.75}
-         \PY{c+c1}{\PYZsh{} n\PYZus{}missing\PYZus{}samples = np.floor(n\PYZus{}samples * missing\PYZus{}rate)}
-         \PY{c+c1}{\PYZsh{} missing\PYZus{}samples = np.hstack((np.zeros(n\PYZus{}samples \PYZhy{} n\PYZus{}missing\PYZus{}samples,}
-         \PY{c+c1}{\PYZsh{}                                       dtype=np.bool),}
-         \PY{c+c1}{\PYZsh{}                              np.ones(n\PYZus{}missing\PYZus{}samples,}
-         \PY{c+c1}{\PYZsh{}                                      dtype=np.bool)))}
-         \PY{c+c1}{\PYZsh{} rng.shuffle(missing\PYZus{}samples)}
-         \PY{c+c1}{\PYZsh{} missing\PYZus{}features = rng.randint(0, n\PYZus{}features, n\PYZus{}missing\PYZus{}samples)}
-         
-         \PY{c+c1}{\PYZsh{} \PYZsh{} Estimate the score without the lines containing missing values}
-         \PY{c+c1}{\PYZsh{} X\PYZus{}filtered = X\PYZus{}full[\PYZti{}missing\PYZus{}samples, :]}
-         \PY{c+c1}{\PYZsh{} y\PYZus{}filtered = y\PYZus{}full[\PYZti{}missing\PYZus{}samples]}
-         \PY{c+c1}{\PYZsh{} estimator = RandomForestRegressor(random\PYZus{}state=0, n\PYZus{}estimators=100)}
-         \PY{c+c1}{\PYZsh{} score = cross\PYZus{}val\PYZus{}score(estimator, X\PYZus{}filtered, y\PYZus{}filtered).mean()}
-         \PY{c+c1}{\PYZsh{} print(\PYZdq{}Score without the samples containing missing values = \PYZpc{}.2f\PYZdq{} \PYZpc{} score)}
-         
-         
-         \PY{c+c1}{\PYZsh{} \PYZsh{} Estimate the score after imputation of the missing values}
-         \PY{c+c1}{\PYZsh{} X\PYZus{}missing = X\PYZus{}full.copy()}
-         \PY{c+c1}{\PYZsh{} X\PYZus{}missing[np.where(missing\PYZus{}samples)[0], missing\PYZus{}features] = 0}
-         \PY{c+c1}{\PYZsh{} y\PYZus{}missing = y\PYZus{}full.copy()}
-         \PY{c+c1}{\PYZsh{} estimator = Pipeline([(\PYZdq{}imputer\PYZdq{}, Imputer(missing\PYZus{}values=0,}
-         \PY{c+c1}{\PYZsh{}                                           strategy=\PYZdq{}mean\PYZdq{},}
-         \PY{c+c1}{\PYZsh{}                                           axis=0)),}
-         \PY{c+c1}{\PYZsh{}                       (\PYZdq{}forest\PYZdq{}, RandomForestRegressor(random\PYZus{}state=0,}
-         \PY{c+c1}{\PYZsh{}                                                        n\PYZus{}estimators=100))])}
-         \PY{c+c1}{\PYZsh{} score = cross\PYZus{}val\PYZus{}score(estimator, X\PYZus{}missing, y\PYZus{}missing).mean()}
-         \PY{c+c1}{\PYZsh{} print(\PYZdq{}Score after imputation of the missing values = \PYZpc{}.2f\PYZdq{} \PYZpc{} score)}
-\end{Verbatim}
-
-
-    Resuming Exploratory Data Analysis
-
-    Anomalies
-
-One problem we always want to be on the lookout for when doing EDA is
-anomalies within the data. These may be due to mis-typed numbers, errors
-in measuring equipment, or they could be valid but extreme measurements.
-One way to support anomalies quantitatively is by looking at the
-statistics of a column using the \texttt{describe} method. The numbers
-in the \texttt{DAYS\_BIRTH} column are negative because they are
-recorded relative to the current loan application. To see these stats in
-years, we can mutliple by -1 and divide by the number of days in a year:
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}21}]:} \PY{c+c1}{\PYZsh{} \PYZsh{} Missing values statistics}
-         \PY{c+c1}{\PYZsh{} missing\PYZus{}values = missing\PYZus{}values\PYZus{}table(df\PYZus{}train)}
-         \PY{c+c1}{\PYZsh{} missing\PYZus{}values.head(20)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}22}]:} \PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{o}{\PYZhy{}}\PY{l+m+mi}{365}\PY{p}{)}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}18}]:} \PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{o}{\PYZhy{}}\PY{l+m+mi}{365}\PY{p}{)}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}22}]:} count    307511.000000
+{\color{outcolor}Out[{\color{outcolor}18}]:} count    307511.000000
          mean         43.936973
          std          11.956133
          min          20.517808
@@ -1070,12 +929,12 @@ years, we can mutliple by -1 and divide by the number of days in a year:
 the high or low end. How about the days of employment?
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}23}]:} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}23}]:} count    307511.000000
+{\color{outcolor}Out[{\color{outcolor}19}]:} count    307511.000000
          mean      63815.045904
          std      141275.766519
          min      -17912.000000
@@ -1086,31 +945,27 @@ the high or low end. How about the days of employment?
          Name: DAYS\_EMPLOYED, dtype: float64
 \end{Verbatim}
             
-    That doesn't look right! The maximum value (besides being positive) is
+    This may not be correct since maximum value (besides being positive) is
 about 1000 years!
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}24}]:} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{title} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Days Employment Histogram}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{title} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Days Employment Histogram}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Days Employment}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
 \end{Verbatim}
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_48_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_41_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    Just out of curiousity, let's subset the anomalous clients and see if
-they tend to have higher or low rates of default than the rest of the
-clients.
-
     Missing Values Strategy \# 1 - Identify Features with Missing Values
 -\textgreater{} Replace with NaN -\textgreater{} Remove all Features
 with Missing Value -\textgreater{} Assess Model using Logistic
 Regression
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}25}]:} \PY{c+c1}{\PYZsh{} Missing values statistics}
+{\color{incolor}In [{\color{incolor}21}]:} \PY{c+c1}{\PYZsh{} Missing values statistics}
          \PY{n}{missing\PYZus{}values} \PY{o}{=} \PY{n}{missing\PYZus{}values\PYZus{}table}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
          \PY{n}{missing\PYZus{}values}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}
 \end{Verbatim}
@@ -1123,7 +978,7 @@ There are 61 columns that have missing values.
     \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}25}]:}                           Missing Values  \% of Total Values
+{\color{outcolor}Out[{\color{outcolor}21}]:}                           Missing Values  \% of Total Values
          COMMONAREA\_MODE                   214865               69.9
          COMMONAREA\_MEDI                   214865               69.9
          COMMONAREA\_AVG                    214865               69.9
@@ -1147,7 +1002,7 @@ There are 61 columns that have missing values.
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}26}]:} \PY{c+c1}{\PYZsh{}Omitting TARGET from Column list}
+{\color{incolor}In [{\color{incolor}22}]:} \PY{c+c1}{\PYZsh{}Omitting TARGET from Column list}
          \PY{n}{train}\PY{o}{=} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
          \PY{c+c1}{\PYZsh{} Replace Nulls with NaN}
          \PY{c+c1}{\PYZsh{} mark zero values as missing or NaN}
@@ -1224,7 +1079,7 @@ Length: 239, dtype: int64
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}27}]:} \PY{c+c1}{\PYZsh{} print the first 20 rows of data}
+{\color{incolor}In [{\color{incolor}23}]:} \PY{c+c1}{\PYZsh{} print the first 20 rows of data}
          \PY{k}{print}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
@@ -1389,7 +1244,7 @@ Length: 239, dtype: int64
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}28}]:} \PY{k}{print} \PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}24}]:} \PY{k}{print} \PY{p}{(}\PY{n}{train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
 
@@ -1500,7 +1355,7 @@ Length: 239, dtype: int64
 Logistic Regression
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}29}]:} \PY{c+c1}{\PYZsh{} drop rows with missing values}
+{\color{incolor}In [{\color{incolor}25}]:} \PY{c+c1}{\PYZsh{} drop rows with missing values}
          \PY{n}{train}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
          \PY{c+c1}{\PYZsh{} summarize the number of rows and columns in the dataset}
          \PY{c+c1}{\PYZsh{}Add in the TARGET}
@@ -1515,12 +1370,12 @@ Logistic Regression
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}26}]:} \PY{n}{train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}30}]:}      SK\_ID\_CURR  NAME\_CONTRACT\_TYPE  FLAG\_OWN\_CAR  FLAG\_OWN\_REALTY  \textbackslash{}
+{\color{outcolor}Out[{\color{outcolor}26}]:}      SK\_ID\_CURR  NAME\_CONTRACT\_TYPE  FLAG\_OWN\_CAR  FLAG\_OWN\_REALTY  \textbackslash{}
          71       100083                   0             1                1   
          124      100145                   0             1                1   
          143      100165                   0             1                1   
@@ -1608,7 +1463,7 @@ Logistic Regression
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}31}]:} \PY{c+c1}{\PYZsh{}Deploying Logistic Regression}
+{\color{incolor}In [{\color{incolor}27}]:} \PY{c+c1}{\PYZsh{}Deploying Logistic Regression}
          \PY{c+c1}{\PYZsh{}Splitting the dataset}
          
          \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{preprocessing}
@@ -1635,14 +1490,14 @@ This module was deprecated in version 0.18 in favor of the model\_selection modu
     \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}31}]:} LogisticRegression(C=1.0, class\_weight=None, dual=False, fit\_intercept=True,
+{\color{outcolor}Out[{\color{outcolor}27}]:} LogisticRegression(C=1.0, class\_weight=None, dual=False, fit\_intercept=True,
                    intercept\_scaling=1, max\_iter=100, multi\_class='ovr', n\_jobs=1,
                    penalty='l2', random\_state=None, solver='liblinear', tol=0.0001,
                    verbose=0, warm\_start=False)
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{logreg}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}28}]:} \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{logreg}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy of logistic regression classifier on test set: \PYZob{}:.2f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{logreg}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
@@ -1652,17 +1507,53 @@ Accuracy of logistic regression classifier on test set: 0.93
 
     \end{Verbatim}
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{classification\PYZus{}report}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}
+         \PY{k}{print}\PY{p}{(}\PY{n}{classification\PYZus{}report}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+         \PY{k}{print}\PY{p}{(}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score   support
+
+          0       0.93      1.00      0.97      2122
+          1       0.00      0.00      0.00       149
+
+avg / total       0.87      0.93      0.90      2271
+
+0.9343901365037428
+
+    \end{Verbatim}
+
+    The precision is the ratio tp / (tp + fp) where tp is the number of true
+positives and fp the number of false positives. The precision is
+intuitively the ability of the classifier not to label as positive a
+sample that is negative. The recall is the ratio tp / (tp + fn) where tp
+is the number of true positives and fn the number of false negatives.
+The recall is intuitively the ability of the classifier to find all the
+positive samples. The F-beta score can be interpreted as a weighted
+harmonic mean of the precision and recall, where an F-beta score reaches
+its best value at 1 and worst score at 0. The F-beta score weights
+recall more than precision by a factor of beta. beta == 1.0 means recall
+and precision are equally important. The support is the number of
+occurrences of each class in y\_true.
+
+\begin{verbatim}
+courtesy: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_recall_fscore_support.html
+\end{verbatim}
+
     Another Approach: Identify Features with Missing Values -\textgreater{}
 Replace with NaN -\textgreater{} Impute all Features with Missing Value
 -\textgreater{} Assess Model using Logistic Regression
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{df\PYZus{}train} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{application\PYZus{}train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{df\PYZus{}train} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{application\PYZus{}train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{missing\PYZus{}values} \PY{o}{=} \PY{n}{missing\PYZus{}values\PYZus{}table}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}31}]:} \PY{n}{missing\PYZus{}values} \PY{o}{=} \PY{n}{missing\PYZus{}values\PYZus{}table}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
 \end{Verbatim}
 
 
@@ -1673,7 +1564,7 @@ There are 67 columns that have missing values.
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}35}]:} \PY{k}{print} \PY{p}{(}\PY{n}{df\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}32}]:} \PY{k}{print} \PY{p}{(}\PY{n}{df\PYZus{}test}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
 \end{Verbatim}
 
 
@@ -1683,13 +1574,13 @@ There are 67 columns that have missing values.
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}36}]:} \PY{c+c1}{\PYZsh{} Number of unique classes in each object column}
+{\color{incolor}In [{\color{incolor}33}]:} \PY{c+c1}{\PYZsh{} Number of unique classes in each object column}
          \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{select\PYZus{}dtypes}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{object}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{o}{.}\PY{n}{nunique}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}36}]:} NAME\_CONTRACT\_TYPE             2
+{\color{outcolor}Out[{\color{outcolor}33}]:} NAME\_CONTRACT\_TYPE             2
          CODE\_GENDER                    3
          FLAG\_OWN\_CAR                   2
          FLAG\_OWN\_REALTY                2
@@ -1709,7 +1600,7 @@ There are 67 columns that have missing values.
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}37}]:} \PY{k}{print} \PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}34}]:} \PY{k}{print} \PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
 
@@ -1719,31 +1610,7 @@ There are 67 columns that have missing values.
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}38}]:} \PY{c+c1}{\PYZsh{} from sklearn.preprocessing import LabelEncoder}
-         \PY{c+c1}{\PYZsh{} \PYZsh{} Create a label encoder object}
-         \PY{c+c1}{\PYZsh{} le = LabelEncoder()}
-         \PY{c+c1}{\PYZsh{} le\PYZus{}count = 0}
-         
-         \PY{c+c1}{\PYZsh{} \PYZsh{} Iterate through the columns}
-         \PY{c+c1}{\PYZsh{} for col in df\PYZus{}train:}
-         \PY{c+c1}{\PYZsh{}     if df\PYZus{}train[col].dtype == \PYZsq{}object\PYZsq{}:}
-         \PY{c+c1}{\PYZsh{}         \PYZsh{} If 2 or fewer unique categories}
-         \PY{c+c1}{\PYZsh{}         if len(list(df\PYZus{}train[col].unique())) \PYZlt{}= 2:}
-         \PY{c+c1}{\PYZsh{}             \PYZsh{} Train on the training data}
-         \PY{c+c1}{\PYZsh{}             le.fit(df\PYZus{}train[col])}
-         \PY{c+c1}{\PYZsh{}             \PYZsh{} Transform both training and testing data}
-         \PY{c+c1}{\PYZsh{}             df\PYZus{}train[col] = le.transform(df\PYZus{}train[col])}
-         \PY{c+c1}{\PYZsh{}             df\PYZus{}test[col] = le.transform(df\PYZus{}test[col])}
-                     
-         \PY{c+c1}{\PYZsh{}             \PYZsh{} Keep track of how many columns were label encoded}
-         \PY{c+c1}{\PYZsh{}             le\PYZus{}count += 1}
-                     
-         \PY{c+c1}{\PYZsh{} print(\PYZsq{}\PYZpc{}d columns were label encoded.\PYZsq{} \PYZpc{} le\PYZus{}count)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{df\PYZus{}train} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{get\PYZus{}dummies}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}35}]:} \PY{n}{df\PYZus{}train} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{get\PYZus{}dummies}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Training Features shape: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
 \end{Verbatim}
 
@@ -1754,7 +1621,7 @@ There are 67 columns that have missing values.
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{train\PYZus{}labels} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{train\PYZus{}labels} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
          
          \PY{c+c1}{\PYZsh{} Align the training and testing data, keep only columns present in both dataframes}
          \PY{n}{df\PYZus{}train}\PY{p}{,} \PY{n}{df\PYZus{}test} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{align}\PY{p}{(}\PY{n}{df\PYZus{}test}\PY{p}{,} \PY{n}{join} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{l+m+mi}{1}\PY{p}{)}
@@ -1779,7 +1646,7 @@ with Missing Value -\textgreater{} Assess Model using Logistic
 Regression
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}41}]:} \PY{c+c1}{\PYZsh{} Missing values statistics}
+{\color{incolor}In [{\color{incolor}37}]:} \PY{c+c1}{\PYZsh{} Missing values statistics}
          \PY{n}{missing\PYZus{}values} \PY{o}{=} \PY{n}{missing\PYZus{}values\PYZus{}table}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
          \PY{n}{missing\PYZus{}values}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}
 \end{Verbatim}
@@ -1792,7 +1659,7 @@ There are 61 columns that have missing values.
     \end{Verbatim}
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}41}]:}                           Missing Values  \% of Total Values
+{\color{outcolor}Out[{\color{outcolor}37}]:}                           Missing Values  \% of Total Values
          COMMONAREA\_MODE                   214865               69.9
          COMMONAREA\_MEDI                   214865               69.9
          COMMONAREA\_AVG                    214865               69.9
@@ -1816,12 +1683,12 @@ There are 61 columns that have missing values.
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}42}]:}    SK\_ID\_CURR  CNT\_CHILDREN  AMT\_INCOME\_TOTAL  AMT\_CREDIT  AMT\_ANNUITY  \textbackslash{}
+{\color{outcolor}Out[{\color{outcolor}38}]:}    SK\_ID\_CURR  CNT\_CHILDREN  AMT\_INCOME\_TOTAL  AMT\_CREDIT  AMT\_ANNUITY  \textbackslash{}
          0      100002             0          202500.0    406597.5      24700.5   
          1      100003             0          270000.0   1293502.5      35698.5   
          2      100004             0           67500.0    135000.0       6750.0   
@@ -1909,7 +1776,7 @@ There are 61 columns that have missing values.
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}43}]:} \PY{c+c1}{\PYZsh{} Replace Nulls with NaN}
+{\color{incolor}In [{\color{incolor}39}]:} \PY{c+c1}{\PYZsh{} Replace Nulls with NaN}
          \PY{c+c1}{\PYZsh{} mark zero values as missing or NaN}
          
          \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{p}{:}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{NaN}\PY{p}{)}
@@ -2052,12 +1919,12 @@ Length: 237, dtype: int64
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}44}]:}    SK\_ID\_CURR  CNT\_CHILDREN  AMT\_INCOME\_TOTAL  AMT\_CREDIT  AMT\_ANNUITY  \textbackslash{}
+{\color{outcolor}Out[{\color{outcolor}40}]:}    SK\_ID\_CURR  CNT\_CHILDREN  AMT\_INCOME\_TOTAL  AMT\_CREDIT  AMT\_ANNUITY  \textbackslash{}
          0      100002             0          202500.0    406597.5      24700.5   
          1      100003             0          270000.0   1293502.5      35698.5   
          2      100004             0           67500.0    135000.0       6750.0   
@@ -2145,7 +2012,7 @@ Length: 237, dtype: int64
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}45}]:} \PY{c+c1}{\PYZsh{} \PYZsh{}Impute all features with Missing values}
+{\color{incolor}In [{\color{incolor}41}]:} \PY{c+c1}{\PYZsh{} \PYZsh{}Impute all features with Missing values}
          
          \PY{c+c1}{\PYZsh{} from sklearn.preprocessing import Imputer}
          \PY{c+c1}{\PYZsh{} \PYZsh{} fill missing values with mean column values}
@@ -2158,12 +2025,12 @@ Length: 237, dtype: int64
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}46}]:} \PY{c+c1}{\PYZsh{}df\PYZus{}train.head(df\PYZus{}train.iloc[:,\PYZhy{}1]==0)}
+{\color{incolor}In [{\color{incolor}42}]:} \PY{c+c1}{\PYZsh{}df\PYZus{}train.head(df\PYZus{}train.iloc[:,\PYZhy{}1]==0)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}47}]:} \PY{c+c1}{\PYZsh{}LDA}
+{\color{incolor}In [{\color{incolor}43}]:} \PY{c+c1}{\PYZsh{}LDA}
          
          \PY{k+kn}{from} \PY{n+nn}{sklearn.preprocessing} \PY{k+kn}{import} \PY{n}{Imputer}
          \PY{k+kn}{from} \PY{n+nn}{sklearn.discriminant\PYZus{}analysis} \PY{k+kn}{import} \PY{n}{LinearDiscriminantAnalysis}
@@ -2191,7 +2058,7 @@ Length: 237, dtype: int64
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}48}]:} \PY{c+c1}{\PYZsh{} Deploying Logistic Regression}
+{\color{incolor}In [{\color{incolor}44}]:} \PY{c+c1}{\PYZsh{} Deploying Logistic Regression}
          \PY{c+c1}{\PYZsh{}Splitting the dataset}
          \PY{c+c1}{\PYZsh{}Keep the following 6 features (variables) which are important}
          \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{preprocessing}
@@ -2210,14 +2077,14 @@ Length: 237, dtype: int64
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}48}]:} LogisticRegression(C=1.0, class\_weight=None, dual=False, fit\_intercept=True,
+{\color{outcolor}Out[{\color{outcolor}44}]:} LogisticRegression(C=1.0, class\_weight=None, dual=False, fit\_intercept=True,
                    intercept\_scaling=1, max\_iter=100, multi\_class='ovr', n\_jobs=1,
                    penalty='l2', random\_state=None, solver='liblinear', tol=0.0001,
                    verbose=0, warm\_start=False)
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{logreg}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}45}]:} \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{logreg}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy of logistic regression classifier on test set: \PYZob{}:.2f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{logreg}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
@@ -2227,22 +2094,48 @@ Accuracy of logistic regression classifier on test set: 0.92
 
     \end{Verbatim}
 
-    Baseline with Feature Scaling
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{classification\PYZus{}report}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}
+         \PY{k}{print}\PY{p}{(}\PY{n}{classification\PYZus{}report}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+         \PY{k}{print}\PY{p}{(}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
 
-     To get a baseline, we will use all of the features after encoding the
-categorical variables. We will preprocess the data by filling in the
-missing values (imputation) and normalizing the range of the features
-(feature scaling). The following code performs both of these
-preprocessing steps.
-
-    To get a baseline, we will use all of the features after encoding the
-categorical variables. We will preprocess the data by filling in the
-missing values (imputation) and normalizing the range of the features
-(feature scaling). The following code performs both of these
-preprocessing steps.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}50}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.preprocessing} \PY{k+kn}{import} \PY{n}{MinMaxScaler}\PY{p}{,} \PY{n}{Imputer}
+             precision    recall  f1-score   support
+
+          0       0.92      1.00      0.96     56648
+          1       0.00      0.00      0.00      4855
+
+avg / total       0.85      0.92      0.88     61503
+
+0.9210607612636782
+
+    \end{Verbatim}
+
+    The precision is the ratio tp / (tp + fp) where tp is the number of true
+positives and fp the number of false positives. The precision is
+intuitively the ability of the classifier not to label as positive a
+sample that is negative. The recall is the ratio tp / (tp + fn) where tp
+is the number of true positives and fn the number of false negatives.
+The recall is intuitively the ability of the classifier to find all the
+positive samples. The F-beta score can be interpreted as a weighted
+harmonic mean of the precision and recall, where an F-beta score reaches
+its best value at 1 and worst score at 0. The F-beta score weights
+recall more than precision by a factor of beta. beta == 1.0 means recall
+and precision are equally important. The support is the number of
+occurrences of each class in y\_true.
+
+courtesy:
+http://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision\_recall\_fscore\_support.html
+
+    Baseline with Feature Scaling
+
+     Here we perform imputation and normalizing the range of entire feature
+set in order to get baseline model:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.preprocessing} \PY{k+kn}{import} \PY{n}{MinMaxScaler}\PY{p}{,} \PY{n}{Imputer}
          
          \PY{c+c1}{\PYZsh{} Drop the target from the training data}
          \PY{k}{if} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}} \PY{o+ow}{in} \PY{n}{df\PYZus{}train}\PY{p}{:}
@@ -2285,20 +2178,12 @@ preprocessing steps.
 
     \end{Verbatim}
 
-    We will use LogisticRegressionfrom Scikit-Learn for our first model. The
-only change we will make from the default model settings is to lower the
-regularization parameter, C, which controls the amount of overfitting (a
-lower value should decrease overfitting). This will get us slightly
-better results than the default LogisticRegression, but it still will
-set a low bar for any future models.
-
-Here we use the familiar Scikit-Learn modeling syntax: we first create
-the model, then we train the model using .fit and then we make
-predictions on the testing data using .predict\_proba (remember that we
-want probabilities and not a 0 or 1).
+    Deploying LogisticRegressionfrom Scikit-Learn for our first model. Steps
+will be: Scikit-Learn modeling syntax to create the model train the
+model using .fit predictions on the testing data using .predict\_proba 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}51}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{LogisticRegression}
+{\color{incolor}In [{\color{incolor}48}]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{LogisticRegression}
          
          \PY{c+c1}{\PYZsh{} Make the model with the specified regularization parameter}
          \PY{n}{log\PYZus{}reg} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{n}{C} \PY{o}{=} \PY{l+m+mf}{0.0001}\PY{p}{)}
@@ -2309,37 +2194,27 @@ want probabilities and not a 0 or 1).
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}51}]:} LogisticRegression(C=0.0001, class\_weight=None, dual=False,
+{\color{outcolor}Out[{\color{outcolor}48}]:} LogisticRegression(C=0.0001, class\_weight=None, dual=False,
                    fit\_intercept=True, intercept\_scaling=1, max\_iter=100,
                    multi\_class='ovr', n\_jobs=1, penalty='l2', random\_state=None,
                    solver='liblinear', tol=0.0001, verbose=0, warm\_start=False)
 \end{Verbatim}
             
-    Now that the model has been trained, we can use it to make predictions.
-We want to predict the probabilities of not paying a loan, so we use the
-model predict.proba method. This returns an m x 2 array where m is the
-number of observations. The first column is the probability of the
-target being 0 and the second column is the probability of the target
-being 1 (so for a single row, the two columns must sum to 1). We want
-the probability the loan is not repaid, so we will select the second
-column.
-
-The following code makes the predictions and selects the correct column.
+    Next step is predictions and selects the correct column:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}52}]:} \PY{c+c1}{\PYZsh{} Make predictions}
+{\color{incolor}In [{\color{incolor}49}]:} \PY{c+c1}{\PYZsh{} Make predictions}
          \PY{c+c1}{\PYZsh{} Make sure to select the last column only}
          \PY{n}{log\PYZus{}reg\PYZus{}pred} \PY{o}{=} \PY{n}{log\PYZus{}reg}\PY{o}{.}\PY{n}{predict\PYZus{}proba}\PY{p}{(}\PY{n}{test}\PY{p}{)}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
 \end{Verbatim}
 
 
-    The predictions must be in the format shown in the
-sample\_submission.csv file, where there are only two columns:
-SK\_ID\_CURR and TARGET. We will create a dataframe in this format from
-the test set and the predictions called submit.
+    The format for predictions file is as specified by Kaggle given in the
+sample\_submission.csv file, where there are two columns: SK\_ID\_CURR
+and TARGET:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}53}]:} \PY{c+c1}{\PYZsh{} Submission dataframe}
+{\color{incolor}In [{\color{incolor}50}]:} \PY{c+c1}{\PYZsh{} Submission dataframe}
          \PY{n}{submit} \PY{o}{=} \PY{n}{df\PYZus{}test}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SK\PYZus{}ID\PYZus{}CURR}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
          \PY{n}{submit}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{log\PYZus{}reg\PYZus{}pred}
          
@@ -2348,7 +2223,7 @@ the test set and the predictions called submit.
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}53}]:}    SK\_ID\_CURR    TARGET
+{\color{outcolor}Out[{\color{outcolor}50}]:}    SK\_ID\_CURR    TARGET
          0      100001  0.065186
          1      100005  0.123897
          2      100013  0.088657
@@ -2356,23 +2231,15 @@ the test set and the predictions called submit.
          4      100038  0.130668
 \end{Verbatim}
             
-    The predictions represent a probability between 0 and 1 that the loan
-will not be repaid. If we were using these predictions to classify
-applicants, we could set a probability threshold for determining that a
-loan is risky.
+    The predictions as given in Target variable should be assessed by the
+Client and may decide to classify applicant whether can repay loan or
+can not.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}54}]:} \PY{c+c1}{\PYZsh{} Save the submission to a csv file}
+{\color{incolor}In [{\color{incolor}51}]:} \PY{c+c1}{\PYZsh{} Save the submission to a csv file}
          \PY{n}{submit}\PY{o}{.}\PY{n}{to\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log\PYZus{}reg\PYZus{}baseline.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index} \PY{o}{=} \PY{n+nb+bp}{False}\PY{p}{)}
 \end{Verbatim}
 
-
-    The submission has now been saved to the virtual environment in which
-our notebook is running. This runs the entire notebook and then lets us
-download any files that are created during the run.
-
-Once we run the notebook, the files created are available in the
-Versions tab under the Output sub-tab.
 
      This is Data Wrangling complete with Baseline Model determined with
 Logistic Regresssion; next we may proceed with EDA \& Inferential
@@ -2383,7 +2250,7 @@ Statistics,
     Function to Explore Numeric Data
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}55}]:} \PY{k}{def} \PY{n+nf}{numeric}\PY{p}{(}\PY{n}{col}\PY{p}{)}\PY{p}{:}
+{\color{incolor}In [{\color{incolor}52}]:} \PY{k}{def} \PY{n+nf}{numeric}\PY{p}{(}\PY{n}{col}\PY{p}{)}\PY{p}{:}
              \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
              \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Distribution of }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n}{col}\PY{p}{)}
              \PY{n}{ax} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{distplot}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{col}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{p}{)}
@@ -2391,56 +2258,56 @@ Statistics,
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}56}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}CREDIT}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}CREDIT}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_97_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_90_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}INCOME\PYZus{}TOTAL}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dtype}
+{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}INCOME\PYZus{}TOTAL}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dtype}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}57}]:} dtype('float64')
+{\color{outcolor}Out[{\color{outcolor}54}]:} dtype('float64')
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}INCOME\PYZus{}TOTAL}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}55}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}INCOME\PYZus{}TOTAL}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_99_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_92_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}ANNUITY}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}56}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}ANNUITY}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_100_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_93_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}GOODS\PYZus{}PRICE}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{numeric}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{AMT\PYZus{}GOODS\PYZus{}PRICE}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_101_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_94_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}61}]:} \PY{n}{anom} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{365243}\PY{p}{]}
+{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{anom} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{365243}\PY{p}{]}
          \PY{n}{non\PYZus{}anom} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{!=} \PY{l+m+mi}{365243}\PY{p}{]}
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The non\PYZhy{}anomalies default on }\PY{l+s+si}{\PYZpc{}0.2f}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s+s1}{ of loans}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{l+m+mi}{100} \PY{o}{*} \PY{n}{non\PYZus{}anom}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The anomalies default on }\PY{l+s+si}{\PYZpc{}0.2f}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s+s1}{ of loans}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{l+m+mi}{100} \PY{o}{*} \PY{n}{anom}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
@@ -2455,21 +2322,11 @@ There are 55374 anomalous days of employment
 
     \end{Verbatim}
 
-    Well that is extremely interesting! It turns out that the anomalies have
-a lower rate of default. Handling the anomalies depends on the exact
-situation, with no set rules. One of the safest approaches is just to
-set the anomalies to a missing value and then have them filled in (using
-Imputation) before machine learning. In this case, since all the
-anomalies have the exact same value, we want to fill them in with the
-same value in case all of these loans share something in common. The
-anomalous values seem to have some importance, so we want to tell the
-machine learning model if we did in fact fill in these values. As a
-solution, we will fill in the anomalous values with not a number
-(np.nan) and then create a new boolean column indicating whether or not
-the value was anomalous.
+    Considering the anomalies I replace them with not a number (np.nan) and
+create another boolean column to represent if value was anomalous.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}62}]:} \PY{c+c1}{\PYZsh{} Create an anomalous flag column}
+{\color{incolor}In [{\color{incolor}59}]:} \PY{c+c1}{\PYZsh{} Create an anomalous flag column}
          \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED\PYZus{}ANOM}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{365243}
          
          \PY{c+c1}{\PYZsh{} Replace the anomalous values with nan}
@@ -2481,7 +2338,7 @@ the value was anomalous.
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_104_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_97_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -2498,13 +2355,10 @@ line with what we would expect, and we also have created a new column to
 tell the model that these values were originally anomalous (becuase we
 will have to fill in the nans with some value, probably the median of
 the column). The other columns with DAYS in the dataframe look to be
-about what we expect with no obvious outliers. As an extremely important
-note, anything we do to the training data we also have to do to the
-testing data. Let's make sure to create the new column and fill in the
-existing column with np.nan in the testing data.
+about what we expect with no obvious outliers.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED\PYZus{}ANOM}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{365243}
+{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED\PYZus{}ANOM}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{365243}
          \PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mi}{365243}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{nan}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{)}
          
          \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{There are }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s1}{ anomalies in the test data out of }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s1}{ entries}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{df\PYZus{}test}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{DAYS\PYZus{}EMPLOYED\PYZus{}ANOM}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}test}\PY{p}{)}\PY{p}{)}\PY{p}{)}
@@ -2517,26 +2371,26 @@ There are 9274 anomalies in the test data out of 48744 entries
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}117}]:} \PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{l+m+mf}{365.0}\PY{p}{)}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}61}]:} \PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{l+m+mf}{365.0}\PY{p}{)}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}117}]:} count    307511.000000
-          mean         43.936973
-          std          11.956133
-          min          20.517808
-          25\%          34.008219
-          50\%          43.150685
-          75\%          53.923288
-          max          69.120548
-          Name: DAYS\_BIRTH, dtype: float64
+{\color{outcolor}Out[{\color{outcolor}61}]:} count    307511.000000
+         mean        -43.936973
+         std          11.956133
+         min         -69.120548
+         25\%         -53.923288
+         50\%         -43.150685
+         75\%         -34.008219
+         max         -20.517808
+         Name: DAYS\_BIRTH, dtype: float64
 \end{Verbatim}
             
     Dataset Prep for Another set of EDA
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}64}]:} \PY{k+kn}{from} \PY{n+nn}{plotly.offline} \PY{k+kn}{import} \PY{n}{init\PYZus{}notebook\PYZus{}mode}\PY{p}{,} \PY{n}{iplot}
+{\color{incolor}In [{\color{incolor}62}]:} \PY{k+kn}{from} \PY{n+nn}{plotly.offline} \PY{k+kn}{import} \PY{n}{init\PYZus{}notebook\PYZus{}mode}\PY{p}{,} \PY{n}{iplot}
          \PY{k+kn}{from} \PY{n+nn}{wordcloud} \PY{k+kn}{import} \PY{n}{WordCloud}
          \PY{k+kn}{import} \PY{n+nn}{plotly.graph\PYZus{}objs} \PY{k+kn}{as} \PY{n+nn}{go}
          \PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
@@ -2614,7 +2468,7 @@ There are 9274 anomalies in the test data out of 48744 entries
     Imbalance of Data
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}65}]:} \PY{n}{target\PYZus{}distribution} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n}{target\PYZus{}distribution} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
          \PY{n}{target\PYZus{}distribution}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{pie}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,}
                                       \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Target Distribution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
                                       \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{,} 
@@ -2624,28 +2478,25 @@ There are 9274 anomalies in the test data out of 48744 entries
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}65}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x109157990>
+{\color{outcolor}Out[{\color{outcolor}63}]:} <matplotlib.axes.\_subplots.AxesSubplot at 0x1a118feb10>
 \end{Verbatim}
             
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_111_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_104_1.png}
     \end{center}
     { \hspace*{\fill} \\}
     
     Correlations
 
-    Now that we have dealt with the categorical variables and the outliers,
-let's continue with the EDA. One way to try and understand the data is
-by looking for correlations between the features and the target. We can
-calculate the Pearson correlation coefficient between every variable and
-the target using the \texttt{.corr} dataframe method.
-
-The correlation coefficient is not the greatest method to represent
-"relevance" of a feature, but it does give us an idea of possible
-relationships within the data. Some
-\href{http://www.statstutor.ac.uk/resources/uploaded/pearsons.pdf}{general
-interpretations of the absolute value of the correlation coefficent}
-are:
+    Correlation analysis measures the statistical relationship between two
+different variables. The result will show how the change in one
+parameter would impact the other parameter. Correlation analysis is a
+very important concept, popular in the field of predictive analytics.
+Also, it is mandatory to complete the correlations analysis before
+building the model and before arriving at a conclusion about variable
+relationships. courtesy:
+https://www.packtpub.com/mapt/book/big\_data\_and\_business\_intelligence/9781784396312/5/ch05lvl1sec55/eda-\/-correlation-analysis
+(http://www.statstutor.ac.uk/resources/uploaded/pearsons.pdf) :
 
 \begin{itemize}
 \tightlist
@@ -2662,7 +2513,7 @@ are:
 \end{itemize}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}66}]:} \PY{c+c1}{\PYZsh{} Find correlations with the target and sort}
+{\color{incolor}In [{\color{incolor}64}]:} \PY{c+c1}{\PYZsh{} Find correlations with the target and sort}
          \PY{n}{correlations} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{p}{)}
          
          \PY{c+c1}{\PYZsh{} Display correlations}
@@ -2718,29 +2569,24 @@ loan (ie the target == 0). That's a little confusing, so we will take
 the absolute value of the feature and then the correlation will be
 negative.
 
-    Effect of Age on Repayment
+    Loan Repayment CRedibility by Age
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}67}]:} \PY{c+c1}{\PYZsh{} Find the correlation of the positive days since birth and target}
+{\color{incolor}In [{\color{incolor}65}]:} \PY{c+c1}{\PYZsh{} Find the correlation of the positive days since birth and target}
          \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
          \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}67}]:} -0.07823930830982706
+{\color{outcolor}Out[{\color{outcolor}65}]:} -0.07823930830982706
 \end{Verbatim}
             
-    As the client gets older, there is a negative linear relationship with
-the target meaning that as clients get older, they tend to repay their
-loans on time more often.
-
-Let's start looking at this variable. First, we can make a histogram of
-the age. We will put the x axis in years to make the plot a little more
-understandable.
+    Above finding shows more the age of the applicant lesser the risk in
+client repayment of loan.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}68}]:} \PY{c+c1}{\PYZsh{} Set the style of plots}
+{\color{incolor}In [{\color{incolor}66}]:} \PY{c+c1}{\PYZsh{} Set the style of plots}
          \PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fivethirtyeight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
          
          \PY{c+c1}{\PYZsh{} Plot the distribution of ages in years}
@@ -2750,22 +2596,12 @@ understandable.
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_119_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_112_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    By itself, the distribution of age does not tell us much other than that
-there are no outliers as all the ages are reasonable. To visualize the
-effect of the age on the target, we will next make a kernel density
-estimation plot (KDE) colored by the value of the target. A kernel
-density estimate plot shows the distribution of a single variable and
-can be thought of as a smoothed histogram (it is created by computing a
-kernel, usually a Gaussian, at each data point and then averaging all
-the individual kernels to develop a single smooth curve). We will use
-the seaborn kdeplot for this graph.
-
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}69}]:} \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k+kn}{as} \PY{n+nn}{sns}
+{\color{incolor}In [{\color{incolor}67}]:} \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k+kn}{as} \PY{n+nn}{sns}
          \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
          
          \PY{c+c1}{\PYZsh{} KDE plot of loans that were repaid on time}
@@ -2780,24 +2616,16 @@ the seaborn kdeplot for this graph.
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_121_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_113_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    The target == 1 curve skews towards the younger end of the range.
-Although this is not a significant correlation (-0.07 correlation
-coefficient), this variable is likely going to be useful in a machine
-learning model because it does affect the target. Let's look at this
-relationship in another way: average failure to repay loans by age
-bracket.
-
-To make this graph, first we cut the age category into bins of 5 years
-each. Then, for each bin, we calculate the average value of the target,
-which tells us the ratio of loans that were not repaid in each age
-category.
+    From the above graph we can see the applicants who showed risk in loan
+repayment are mostly skewing towards left where the age of applicants
+are lower than 40.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}70}]:} \PY{c+c1}{\PYZsh{} Age information into a separate dataframe}
+{\color{incolor}In [{\color{incolor}68}]:} \PY{c+c1}{\PYZsh{} Age information into a separate dataframe}
          \PY{n}{age\PYZus{}data} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
          \PY{n}{age\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YEARS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{age\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{l+m+mi}{365}
          
@@ -2808,7 +2636,7 @@ category.
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}70}]:}    TARGET  DAYS\_BIRTH  YEARS\_BIRTH  YEARS\_BINNED
+{\color{outcolor}Out[{\color{outcolor}68}]:}    TARGET  DAYS\_BIRTH  YEARS\_BIRTH  YEARS\_BINNED
          0       1        9461    25.920548  (25.0, 30.0]
          1       0       16765    45.931507  (45.0, 50.0]
          2       0       19046    52.180822  (50.0, 55.0]
@@ -2822,14 +2650,14 @@ category.
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}71}]:} \PY{c+c1}{\PYZsh{} Group by the bin and calculate averages}
+{\color{incolor}In [{\color{incolor}69}]:} \PY{c+c1}{\PYZsh{} Group by the bin and calculate averages}
          \PY{n}{age\PYZus{}groups}  \PY{o}{=} \PY{n}{age\PYZus{}data}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YEARS\PYZus{}BINNED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
          \PY{n}{age\PYZus{}groups}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}71}]:}                 TARGET    DAYS\_BIRTH  YEARS\_BIRTH
+{\color{outcolor}Out[{\color{outcolor}69}]:}                 TARGET    DAYS\_BIRTH  YEARS\_BIRTH
          YEARS\_BINNED                                     
          (20.0, 25.0]  0.123036   8532.795625    23.377522
          (25.0, 30.0]  0.111436  10155.219250    27.822518
@@ -2844,31 +2672,22 @@ category.
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}72}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}70}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
          
          \PY{c+c1}{\PYZsh{} Graph the age bins and the average of the target as a bar plot}
          \PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{age\PYZus{}groups}\PY{o}{.}\PY{n}{index}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n+nb}{str}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{100} \PY{o}{*} \PY{n}{age\PYZus{}groups}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
          
          \PY{c+c1}{\PYZsh{} Plot labeling}
          \PY{n}{plt}\PY{o}{.}\PY{n}{xticks}\PY{p}{(}\PY{n}{rotation} \PY{o}{=} \PY{l+m+mi}{75}\PY{p}{)}\PY{p}{;} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Age Group (years)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Failure to Repay (}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Failure to Repay by Age Group}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Loan Repayment by Age Group}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
 \end{Verbatim}
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_125_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_117_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    There is a clear trend: younger applicants are more likely to not repay
-the loan! The rate of failure to repay is above 10\% for the youngest
-three age groups and beolow 5\% for the oldest age group. This is
-information that could be directly used by the bank: because younger
-clients are less likely to repay the loan, maybe they should be provided
-with more guidance or financial planning tips. This does not mean the
-bank should discriminate against younger clients, but it would be smart
-to take precautionary measures to help younger clients pay on time.
-
     Exterior Sources
 
     Exterior Sources The 3 variables with the strongest negative
@@ -2884,7 +2703,7 @@ First, we can show the correlations of the EXT\_SOURCE features with the
 target and with each other.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}73}]:} \PY{c+c1}{\PYZsh{} Extract the EXT\PYZus{}SOURCE variables and show correlations}
+{\color{incolor}In [{\color{incolor}71}]:} \PY{c+c1}{\PYZsh{} Extract the EXT\PYZus{}SOURCE variables and show correlations}
          \PY{n}{ext\PYZus{}data} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}EMPLOYED}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NAME\PYZus{}EDUCATION\PYZus{}TYPE\PYZus{}Higher education}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CODE\PYZus{}GENDER\PYZus{}F}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
          \PY{n}{ext\PYZus{}data\PYZus{}corrs} \PY{o}{=} \PY{n}{ext\PYZus{}data}\PY{o}{.}\PY{n}{corr}\PY{p}{(}\PY{p}{)}
          \PY{n}{ext\PYZus{}data\PYZus{}corrs}
@@ -2894,39 +2713,33 @@ target and with each other.
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}73}]:} <matplotlib.figure.Figure at 0x1a0bfe6350>
+{\color{outcolor}Out[{\color{outcolor}71}]:} <matplotlib.figure.Figure at 0x1a127d8410>
 \end{Verbatim}
             
     
     \begin{verbatim}
-<matplotlib.figure.Figure at 0x1a0bfe6350>
+<matplotlib.figure.Figure at 0x1a127d8410>
     \end{verbatim}
 
     
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}74}]:} \PY{c+c1}{\PYZsh{} Heatmap of correlations}
+{\color{incolor}In [{\color{incolor}72}]:} \PY{c+c1}{\PYZsh{} Heatmap of correlations}
          \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{ext\PYZus{}data\PYZus{}corrs}\PY{p}{,} \PY{n}{cmap} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{RdYlBu\PYZus{}r}\PY{p}{,} \PY{n}{vmin} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{0.02}\PY{p}{,} \PY{n}{annot} \PY{o}{=} \PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{vmax} \PY{o}{=} \PY{l+m+mf}{0.5}\PY{p}{)}
          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Correlation Heatmap}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
 \end{Verbatim}
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_130_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_121_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    All three EXT\_SOURCE featureshave negative correlations with the
-target, indicating that as the value of the EXT\_SOURCE increases, the
-client is more likely to repay the loan. We can also see that
-DAYS\_BIRTH is positively correlated with EXT\_SOURCE\_1 indicating that
-maybe one of the factors in this score is the client age.
-
-Next we can look at the distribution of each of these features colored
-by the value of the target. This will let us visualize the effect of
-this variable on the target.
+    EXT\_SOURCE\_1, EXT\_SOURCE\_2 and EXT\_SOURCE\_3 show inverse influence
+on risk repayment ability of the applicant based on above correlation
+heatmap.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}75}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}73}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{)}\PY{p}{)}
          \PY{c+c1}{\PYZsh{} iterate through the sources}
          \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{source} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{:}
              
@@ -2946,73 +2759,130 @@ this variable on the target.
 
 
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_132_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_123_0.png}
     \end{center}
     { \hspace*{\fill} \\}
     
-    EXT\_SOURCE\_3 displays the greatest difference between the values of
-the target. We can clearly see that this feature has some relationship
-to the likelihood of an applicant to repay a loan. The relationship is
-not very strong (in fact they are all considered very weak, but these
-variables will still be useful for a machine learning model to predict
-whether or not an applicant will repay a loan on time.
+    Visualizing Data with Pairs Plot
 
-    Pairs Plot
-
-    As a final exploratory plot, we can make a pairs plot of the
-\texttt{EXT\_SOURCE} variables and the \texttt{DAYS\_BIRTH} variable.
-The
-\href{https://towardsdatascience.com/visualizing-data-with-pair-plots-in-python-f228cf529166}{Pairs
-Plot} is a great exploration tool because it lets us see relationships
-between multiple pairs of variables as well as distributions of single
-variables. Here we are using the seaborn visualization library and the
-PairGrid function to create a Pairs Plot with scatterplots on the upper
-triangle, histograms on the diagonal, and 2D kernel density plots and
-correlation coefficients on the lower triangle.
-
-If you don't understand this code, that's all right! Plotting in Python
-can be overly complex, and for anything beyond the simplest graphs, I
-usually find an existing implementation and adapt the code (don't repeat
-yourself)!
+    Pair plot is used to understand the best set of features to explain a
+relationship between two variables or to form the most separated
+clusters. It also helps to form some simple classification models by
+drawing some simple lines or make linear separation in our dataset.
+Courtesy: https://www.quora.com/What-are-pair-plots
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}115}]:} \PY{c+c1}{\PYZsh{} Copy the data for plotting}
-          \PY{n}{plot\PYZus{}data} \PY{o}{=} \PY{n}{ext\PYZus{}data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Add in the age of the client in years}
-          \PY{n}{plot\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YEARS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{age\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YEARS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-          
-          \PY{c+c1}{\PYZsh{} Drop na values and limit to first 100000 rows}
-          \PY{n}{plot\PYZus{}data} \PY{o}{=} \PY{n}{plot\PYZus{}data}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{100000}\PY{p}{,} \PY{p}{:}\PY{p}{]}
-          
-          \PY{c+c1}{\PYZsh{} Function to calculate correlation coefficient between two columns}
-          \PY{k}{def} \PY{n+nf}{corr\PYZus{}func}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
-              \PY{n}{r} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{corrcoef}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
-              \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
-              \PY{n}{ax}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r = \PYZob{}:.2f\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{p}{,}
-                          \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{o}{.}\PY{l+m+mi}{2}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{xycoords}\PY{o}{=}\PY{n}{ax}\PY{o}{.}\PY{n}{transAxes}\PY{p}{,}
-                          \PY{n}{size} \PY{o}{=} \PY{l+m+mi}{20}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Create the pairgrid object}
-          \PY{n}{grid} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{PairGrid}\PY{p}{(}\PY{n}{data} \PY{o}{=} \PY{n}{plot\PYZus{}data}\PY{p}{,} \PY{n}{size} \PY{o}{=} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{diag\PYZus{}sharey}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}
-                              \PY{n}{hue} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
-                              \PY{n+nb}{vars} \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{list}\PY{p}{(}\PY{n}{plot\PYZus{}data}\PY{o}{.}\PY{n}{columns}\PY{p}{)} \PY{k}{if} \PY{n}{x} \PY{o}{!=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Upper is a scatter plot}
-          \PY{n}{grid}\PY{o}{.}\PY{n}{map\PYZus{}upper}\PY{p}{(}\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{,} \PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Diagonal is a histogram}
-          \PY{n}{grid}\PY{o}{.}\PY{n}{map\PYZus{}diag}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Bottom is density plot}
-          \PY{n}{grid}\PY{o}{.}\PY{n}{map\PYZus{}lower}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,} \PY{n}{cmap} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{OrRd\PYZus{}r}\PY{p}{)}\PY{p}{;}
-          
-          \PY{n}{plt}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ext Source and Age Features Pairs Plot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{l+m+mf}{1.05}\PY{p}{)}\PY{p}{;}
+{\color{incolor}In [{\color{incolor}74}]:} \PY{c+c1}{\PYZsh{} Copy the data for plotting}
+         \PY{n}{plot\PYZus{}data} \PY{o}{=} \PY{n}{ext\PYZus{}data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Add in the age of the client in years}
+         \PY{n}{plot\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YEARS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{age\PYZus{}data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YEARS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         
+         \PY{c+c1}{\PYZsh{} Drop na values and limit to first 100000 rows}
+         \PY{n}{plot\PYZus{}data} \PY{o}{=} \PY{n}{plot\PYZus{}data}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{100000}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+         
+         \PY{c+c1}{\PYZsh{} Function to calculate correlation coefficient between two columns}
+         \PY{k}{def} \PY{n+nf}{corr\PYZus{}func}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+             \PY{n}{r} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{corrcoef}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+             \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+             \PY{n}{ax}\PY{o}{.}\PY{n}{annotate}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{r = \PYZob{}:.2f\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{r}\PY{p}{)}\PY{p}{,}
+                         \PY{n}{xy}\PY{o}{=}\PY{p}{(}\PY{o}{.}\PY{l+m+mi}{2}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{xycoords}\PY{o}{=}\PY{n}{ax}\PY{o}{.}\PY{n}{transAxes}\PY{p}{,}
+                         \PY{n}{size} \PY{o}{=} \PY{l+m+mi}{20}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Create the pairgrid object}
+         \PY{n}{grid} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{PairGrid}\PY{p}{(}\PY{n}{data} \PY{o}{=} \PY{n}{plot\PYZus{}data}\PY{p}{,} \PY{n}{size} \PY{o}{=} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{diag\PYZus{}sharey}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{,}
+                             \PY{n}{hue} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+                             \PY{n+nb}{vars} \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{list}\PY{p}{(}\PY{n}{plot\PYZus{}data}\PY{o}{.}\PY{n}{columns}\PY{p}{)} \PY{k}{if} \PY{n}{x} \PY{o}{!=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Upper is a scatter plot}
+         \PY{n}{grid}\PY{o}{.}\PY{n}{map\PYZus{}upper}\PY{p}{(}\PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{,} \PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.2}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Diagonal is a histogram}
+         \PY{n}{grid}\PY{o}{.}\PY{n}{map\PYZus{}diag}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Bottom is density plot}
+         \PY{n}{grid}\PY{o}{.}\PY{n}{map\PYZus{}lower}\PY{p}{(}\PY{n}{sns}\PY{o}{.}\PY{n}{kdeplot}\PY{p}{,} \PY{n}{cmap} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{cm}\PY{o}{.}\PY{n}{OrRd\PYZus{}r}\PY{p}{)}\PY{p}{;}
+         
+         \PY{n}{plt}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Ext Source and Age Features Pairs Plot}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{size} \PY{o}{=} \PY{l+m+mi}{32}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{l+m+mf}{1.05}\PY{p}{)}\PY{p}{;}
 \end{Verbatim}
 
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+        ---------------------------------------------------------------------------
+
+        KeyboardInterrupt                         Traceback (most recent call last)
+
+        <ipython-input-74-152b87e43dbb> in <module>()
+         29 
+         30 \# Bottom is density plot
+    ---> 31 grid.map\_lower(sns.kdeplot, cmap = plt.cm.OrRd\_r);
+         32 
+         33 plt.suptitle('Ext Source and Age Features Pairs Plot', size = 32, y = 1.05);
+
+
+        /anaconda2/lib/python2.7/site-packages/seaborn/axisgrid.pyc in map\_lower(self, func, **kwargs)
+       1423                 color = self.palette[k] if kw\_color is None else kw\_color
+       1424                 func(data\_k[x\_var], data\_k[y\_var], label=label\_k,
+    -> 1425                      color=color, **kwargs)
+       1426 
+       1427             self.\_clean\_axis(ax)
+
+
+        /anaconda2/lib/python2.7/site-packages/seaborn/distributions.pyc in kdeplot(data, data2, shade, vertical, kernel, bw, gridsize, cut, clip, legend, cumulative, shade\_lowest, cbar, cbar\_ax, cbar\_kws, ax, **kwargs)
+        651         ax = \_bivariate\_kdeplot(x, y, shade, shade\_lowest,
+        652                                 kernel, bw, gridsize, cut, clip, legend,
+    --> 653                                 cbar, cbar\_ax, cbar\_kws, ax, **kwargs)
+        654     else:
+        655         ax = \_univariate\_kdeplot(data, shade, vertical, kernel, bw,
+
+
+        /anaconda2/lib/python2.7/site-packages/seaborn/distributions.pyc in \_bivariate\_kdeplot(x, y, filled, fill\_lowest, kernel, bw, gridsize, cut, clip, axlabel, cbar, cbar\_ax, cbar\_kws, ax, **kwargs)
+        381     \# Calculate the KDE
+        382     if \_has\_statsmodels:
+    --> 383         xx, yy, z = \_statsmodels\_bivariate\_kde(x, y, bw, gridsize, cut, clip)
+        384     else:
+        385         xx, yy, z = \_scipy\_bivariate\_kde(x, y, bw, gridsize, cut, clip)
+
+
+        /anaconda2/lib/python2.7/site-packages/seaborn/distributions.pyc in \_statsmodels\_bivariate\_kde(x, y, bw, gridsize, cut, clip)
+        435     y\_support = \_kde\_support(y, kde.bw[1], gridsize, cut, clip[1])
+        436     xx, yy = np.meshgrid(x\_support, y\_support)
+    --> 437     z = kde.pdf([xx.ravel(), yy.ravel()]).reshape(xx.shape)
+        438     return xx, yy, z
+        439 
+
+
+        /anaconda2/lib/python2.7/site-packages/statsmodels/nonparametric/kernel\_density.pyc in pdf(self, data\_predict)
+        194             pdf\_est.append(gpke(self.bw, data=self.data,
+        195                                 data\_predict=data\_predict[i, :],
+    --> 196                                 var\_type=self.var\_type) / self.nobs)
+        197 
+        198         pdf\_est = np.squeeze(pdf\_est)
+
+
+        /anaconda2/lib/python2.7/site-packages/statsmodels/nonparametric/\_kernel\_base.pyc in gpke(bw, data, data\_predict, var\_type, ckertype, okertype, ukertype, tosum)
+        509     for ii, vtype in enumerate(var\_type):
+        510         func = kernel\_func[kertypes[vtype]]
+    --> 511         Kval[:, ii] = func(bw[ii], data[:, ii], data\_predict[ii])
+        512 
+        513     iscontinuous = np.array([c == 'c' for c in var\_type])
+
+
+        /anaconda2/lib/python2.7/site-packages/statsmodels/nonparametric/kernels.pyc in gaussian(h, Xi, x)
+        126 
+        127     """
+    --> 128     return (1. / np.sqrt(2 * np.pi)) * np.exp(-(Xi - x)**2 / (h**2 * 2.))
+        129 
+        130 
+
+
+        KeyboardInterrupt: 
+
+    \end{Verbatim}
+
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_136_0.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_126_1.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -3024,87 +2894,59 @@ relationship between the \texttt{EXT\_SOURCE\_1} and the
 that this feature may take into account the age of the client.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}94}]:} \PY{n}{n}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
-         \PY{k}{print}\PY{p}{(}\PY{n}{n}\PY{p}{)}
-         \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-         \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)} 
-         \PY{k}{print} \PY{p}{(}\PY{n}{y}\PY{p}{)}
-         
-         \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{marker} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Customer Credibility to Repay Loan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{margins}\PY{p}{(}\PY{o}{.}\PY{l+m+mo}{02}\PY{p}{)}
-         
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{n}\PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+        \PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)} 
+        \PY{k}{print} \PY{p}{(}\PY{n}{y}\PY{p}{)}
+        
+        \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{marker} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Customer Credibility to Repay Loan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{\PYZus{}}\PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{margins}\PY{p}{(}\PY{o}{.}\PY{l+m+mo}{02}\PY{p}{)}
+        
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-307511
-[3.25191619e-06 6.50383238e-06 9.75574857e-06 {\ldots} 9.99993496e-01
- 9.99996748e-01 1.00000000e+00]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} Checking ECDF Distribution of Ability to Repay Loan across the real data and theoretical samples of data}
+        \PY{k}{def} \PY{n+nf}{ecdf}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{:}
+            \PY{n}{x}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+            \PY{n}{n}\PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}
+            \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n}{n}
+            \PY{k}{return} \PY{n}{x}\PY{p}{,}\PY{n}{y}
+        
+        \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+        \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Seed the random number generator:}
+        \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}Sample data for theortical normal dist}
+        \PY{n}{samples} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{p}{)}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{10000}\PY{p}{)}
+        \PY{n}{samples}
+\end{Verbatim}
 
-    \end{Verbatim}
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_138_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}95}]:} \PY{c+c1}{\PYZsh{} Checking ECDF Distribution of Ability to Repay Loan across the real data and theoretical samples of data}
-         \PY{k}{def} \PY{n+nf}{ecdf}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{:}
-             \PY{n}{x}\PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{data}\PY{p}{)}
-             \PY{n}{n}\PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data}\PY{p}{)}\PY{p}{)}
-             \PY{n}{y} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{n}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n}{n}
-             \PY{k}{return} \PY{n}{x}\PY{p}{,}\PY{n}{y}
-         
-         \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
-         \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{)}
-         
-         \PY{c+c1}{\PYZsh{} Seed the random number generator:}
-         \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{seed}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{)}
-         \PY{c+c1}{\PYZsh{}Sample data for theortical normal dist}
-         \PY{n}{samples} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{p}{)}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{10000}\PY{p}{)}
-         \PY{n}{samples}
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{}find ecdf of data}
+        \PY{n}{x\PYZus{}count}\PY{p}{,} \PY{n}{y\PYZus{}count} \PY{o}{=} \PY{n}{ecdf}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{p}{)}
+        \PY{n}{x\PYZus{}theor}\PY{p}{,} \PY{n}{y\PYZus{}theor} \PY{o}{=} \PY{n}{ecdf}\PY{p}{(}\PY{n}{samples}\PY{p}{)}
+        
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x\PYZus{}count}\PY{p}{,} \PY{n}{y\PYZus{}count}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x\PYZus{}theor}\PY{p}{,} \PY{n}{y\PYZus{}theor}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Label axes and add legend and a title:}
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Customer Credibility to Repay Loan VS Theoretical Normal Dist}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Customer to Repay Loan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Save and display the plots:}
+        \PY{c+c1}{\PYZsh{}plt.savefig(\PYZsq{}reports/figures/cdf\PYZus{}body\PYZus{}temps.png\PYZsq{})}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}95}]:} array([-0.00435514,  0.17315615,  0.0382565 , {\ldots},  0.28558261,
-                -0.14273527,  0.07132198])
-\end{Verbatim}
-            
-    
-    \begin{verbatim}
-<matplotlib.figure.Figure at 0x1a45ff2ad0>
-    \end{verbatim}
-
-    
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}96}]:} \PY{c+c1}{\PYZsh{}find ecdf of data}
-         \PY{n}{x\PYZus{}count}\PY{p}{,} \PY{n}{y\PYZus{}count} \PY{o}{=} \PY{n}{ecdf}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{p}{)}
-         \PY{n}{x\PYZus{}theor}\PY{p}{,} \PY{n}{y\PYZus{}theor} \PY{o}{=} \PY{n}{ecdf}\PY{p}{(}\PY{n}{samples}\PY{p}{)}
-         
-         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x\PYZus{}count}\PY{p}{,} \PY{n}{y\PYZus{}count}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x\PYZus{}theor}\PY{p}{,} \PY{n}{y\PYZus{}theor}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         
-         \PY{c+c1}{\PYZsh{} Label axes and add legend and a title:}
-         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Customer Credibility to Repay Loan VS Theoretical Normal Dist}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Customer to Repay Loan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         
-         \PY{c+c1}{\PYZsh{} Save and display the plots:}
-         \PY{c+c1}{\PYZsh{}plt.savefig(\PYZsq{}reports/figures/cdf\PYZus{}body\PYZus{}temps.png\PYZsq{})}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_140_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
     Compare the distribution of the data to the theoretical distribution of
 the data. This is done by comparing the ecdf First define a function for
 computing the ecdf from a data set. Next use np.random.normal to sample
@@ -3116,95 +2958,58 @@ value '0' indicates 'will repay loan on time', 1 (will have difficulty
 repaying loan)
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}97}]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{75}\PY{p}{,} \PY{l+m+mi}{90}\PY{p}{,} \PY{l+m+mi}{98}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{25}\PY{p}{,} \PY{l+m+mi}{50}\PY{p}{,} \PY{l+m+mi}{75}\PY{p}{,} \PY{l+m+mi}{90}\PY{p}{,} \PY{l+m+mi}{98}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}97}]:} array([0., 0., 0., 0., 1., 1.])
-\end{Verbatim}
-            
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}98}]:} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{,} \PY{n}{column}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{,} \PY{n}{column}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}98}]:} array([[<matplotlib.axes.\_subplots.AxesSubplot object at 0x1a36675210>]],
-               dtype=object)
-\end{Verbatim}
-            
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_143_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
      Variance
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}99}]:} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}99}]:} 0.0742116771655796
-\end{Verbatim}
-            
      Standard Deviation
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}100}]:} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}100}]:} 0.27241820270602257
-\end{Verbatim}
-            
      Covariance
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}101}]:} \PY{n}{np}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}101}]:} array([[ 0.07421192, -0.0037652 ],
-                 [-0.0037652 ,  0.01943096]])
-\end{Verbatim}
-            
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}102}]:} \PY{n}{np}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{cov}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}102}]:} array([[ 7.42119185e-02, -9.30133834e+01],
-                 [-9.30133834e+01,  1.90443968e+07]])
-\end{Verbatim}
-            
      Pearson Correlation Coeffient
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}103}]:} \PY{n}{np}\PY{o}{.}\PY{n}{corrcoef}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}103}]:} array([[ 1.        , -0.07823931],
-                 [-0.07823931,  1.        ]])
-\end{Verbatim}
-            
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}104}]:} \PY{c+c1}{\PYZsh{}\PYZlt{}b\PYZgt{} Is the sample size large? Are the observations independent?}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{corrcoef}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DAYS\PYZus{}BIRTH}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}105}]:} \PY{c+c1}{\PYZsh{} print(\PYZsq{}We have\PYZsq{}, len(df\PYZus{}train), \PYZsq{}samples across\PYZsq{}, len(list(df\PYZus{}train.columns)), \PYZsq{}features.\PYZsq{})}
-          \PY{c+c1}{\PYZsh{} \PYZsh{} confirmed here: https://ww2.amstat.org/publications/jse/datasets/normtemp.txt}
-          
-          \PY{c+c1}{\PYZsh{} print(df\PYZus{}train.groupby([\PYZsq{}CODE\PYZus{}GENDER\PYZsq{}]).count(), df\PYZus{}train.info())}
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{}\PYZlt{}b\PYZgt{} Is the sample size large? Are the observations independent?}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} print(\PYZsq{}We have\PYZsq{}, len(df\PYZus{}train), \PYZsq{}samples across\PYZsq{}, len(list(df\PYZus{}train.columns)), \PYZsq{}features.\PYZsq{})}
+        \PY{c+c1}{\PYZsh{} \PYZsh{} confirmed here: https://ww2.amstat.org/publications/jse/datasets/normtemp.txt}
+        
+        \PY{c+c1}{\PYZsh{} print(df\PYZus{}train.groupby([\PYZsq{}CODE\PYZus{}GENDER\PYZsq{}]).count(), df\PYZus{}train.info())}
 \end{Verbatim}
 
 
@@ -3213,64 +3018,53 @@ repaying loan)
      Step 1: Build a function to create a bootstrap replicate
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}106}]:} \PY{k}{def} \PY{n+nf}{bootstrap\PYZus{}replicate\PYZus{}1d}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{)}\PY{p}{:}
-              \PY{k}{return} \PY{n}{func}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-          \PY{c+c1}{\PYZsh{}np.random.choice() works on linear model}
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{bootstrap\PYZus{}replicate\PYZus{}1d}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{)}\PY{p}{:}
+            \PY{k}{return} \PY{n}{func}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{}np.random.choice() works on linear model}
 \end{Verbatim}
 
 
      Step 2: Another function to generate multiple such bootstrap samples
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}107}]:} \PY{k}{def} \PY{n+nf}{draw\PYZus{}bs\PYZus{}reps}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
-              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Draw bootstrap replicates.\PYZdq{}\PYZdq{}\PYZdq{}}
-          
-              \PY{c+c1}{\PYZsh{} Initialize array of replicates: bs\PYZus{}replicates}
-              \PY{n}{bs\PYZus{}replicates} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{size}\PY{p}{)}
-          
-              \PY{c+c1}{\PYZsh{} Generate replicates}
-              \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{:}
-                  \PY{n}{bs\PYZus{}replicates}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{bootstrap\PYZus{}replicate\PYZus{}1d}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{)}
-          
-              \PY{k}{return} \PY{n}{bs\PYZus{}replicates}
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{draw\PYZus{}bs\PYZus{}reps}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Draw bootstrap replicates.\PYZdq{}\PYZdq{}\PYZdq{}}
+        
+            \PY{c+c1}{\PYZsh{} Initialize array of replicates: bs\PYZus{}replicates}
+            \PY{n}{bs\PYZus{}replicates} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{size}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Generate replicates}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{:}
+                \PY{n}{bs\PYZus{}replicates}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{bootstrap\PYZus{}replicate\PYZus{}1d}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{func}\PY{p}{)}
+        
+            \PY{k}{return} \PY{n}{bs\PYZus{}replicates}
 \end{Verbatim}
 
 
      Step 3: Plot the histogram for bootstrap replicates
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}108}]:} \PY{c+c1}{\PYZsh{} Take 10,000 bootstrap replicates of the mean: bs\PYZus{}replicates}
-          \PY{n}{bs\PYZus{}replicates} \PY{o}{=} \PY{n}{draw\PYZus{}bs\PYZus{}reps}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{,} \PY{l+m+mi}{10000}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Compute and print SEM Standard Error of the Mean}
-          \PY{n}{sem} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
-          \PY{k}{print}\PY{p}{(}\PY{n}{sem}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Compute and print standard deviation of bootstrap replicates}
-          \PY{n}{bs\PYZus{}std} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{)}
-          \PY{k}{print}\PY{p}{(}\PY{n}{bs\PYZus{}std}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Make a histogram of the results}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{normed}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Credit Loan Default Risk}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Show the plot}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} Take 10,000 bootstrap replicates of the mean: bs\PYZus{}replicates}
+        \PY{n}{bs\PYZus{}replicates} \PY{o}{=} \PY{n}{draw\PYZus{}bs\PYZus{}reps}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{,} \PY{l+m+mi}{10000}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Compute and print SEM Standard Error of the Mean}
+        \PY{n}{sem} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{n}{sem}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Compute and print standard deviation of bootstrap replicates}
+        \PY{n}{bs\PYZus{}std} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{n}{bs\PYZus{}std}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Make a histogram of the results}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{normed}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Credit Loan Default Risk}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Show the plot}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-0.0004912536560492155
-0.0004897216997795728
-
-    \end{Verbatim}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_161_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
      This is bootstrap estimate of the probability distribution function of
 the mean of 'Credit Loan Default Risk'at the Home Credit Group.
 Remember, we are estimating the mean 'Credit Loan Default Risk' we would
@@ -3293,61 +3087,47 @@ of the bootstrap replicates of the mean is Normal.
 percentile of bootstrap replicates is stored as bs\_replicates
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}110}]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{97.5}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{bs\PYZus{}replicates}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{97.5}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}110}]:} array([0.07979544, 0.08170765])
-\end{Verbatim}
-            
      The above steps may be repeated to show for Variance function as well
 
      Extending Confidence Interval Concept to Pairs Bootstrap
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}111}]:} \PY{c+c1}{\PYZsh{}Finding pairs bootstrap for slope \PYZam{} intercept of a linear function between Bike REntal Count and Registered User Type}
-          \PY{k}{def} \PY{n+nf}{draw\PYZus{}bs\PYZus{}pairs\PYZus{}linreg}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
-              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Perform pairs bootstrap for linear regression.\PYZdq{}\PYZdq{}\PYZdq{}}
-          
-              \PY{c+c1}{\PYZsh{} Set up array of indices to sample from: inds}
-              \PY{n}{inds} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
-          
-              \PY{c+c1}{\PYZsh{} Initialize replicates: bs\PYZus{}slope\PYZus{}reps, bs\PYZus{}intercept\PYZus{}reps}
-              \PY{n}{bs\PYZus{}slope\PYZus{}reps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{size}\PY{p}{)}
-              \PY{n}{bs\PYZus{}intercept\PYZus{}reps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{size}\PY{p}{)}
-          
-              \PY{c+c1}{\PYZsh{} Generate replicates}
-              \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{:}
-                  \PY{n}{bs\PYZus{}inds} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{inds}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{inds}\PY{p}{)}\PY{p}{)}
-                  \PY{n}{bs\PYZus{}x}\PY{p}{,} \PY{n}{bs\PYZus{}y} \PY{o}{=} \PY{n}{x}\PY{p}{[}\PY{n}{bs\PYZus{}inds}\PY{p}{]}\PY{p}{,} \PY{n}{y}\PY{p}{[}\PY{n}{bs\PYZus{}inds}\PY{p}{]}
-                  \PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{bs\PYZus{}intercept\PYZus{}reps}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{polyfit}\PY{p}{(}\PY{n}{bs\PYZus{}x}\PY{p}{,} \PY{n}{bs\PYZus{}y}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
-          
-              \PY{k}{return} \PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{n}{bs\PYZus{}intercept\PYZus{}reps}
-          
-          \PY{c+c1}{\PYZsh{} Generate replicates of slope and intercept using pairs bootstrap}
-          \PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{n}{bs\PYZus{}intercept\PYZus{}reps} \PY{o}{=} \PY{n}{draw\PYZus{}bs\PYZus{}pairs\PYZus{}linreg}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Compute and print 95\PYZpc{} CI for slope}
-          \PY{k}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{97.5}\PY{p}{]}\PY{p}{)}\PY{p}{)}
-          \PY{c+c1}{\PYZsh{} Plot the histogram}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{normed}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{slope}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{}Finding pairs bootstrap for slope \PYZam{} intercept of a linear function between Bike REntal Count and Registered User Type}
+        \PY{k}{def} \PY{n+nf}{draw\PYZus{}bs\PYZus{}pairs\PYZus{}linreg}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Perform pairs bootstrap for linear regression.\PYZdq{}\PYZdq{}\PYZdq{}}
+        
+            \PY{c+c1}{\PYZsh{} Set up array of indices to sample from: inds}
+            \PY{n}{inds} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Initialize replicates: bs\PYZus{}slope\PYZus{}reps, bs\PYZus{}intercept\PYZus{}reps}
+            \PY{n}{bs\PYZus{}slope\PYZus{}reps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{size}\PY{p}{)}
+            \PY{n}{bs\PYZus{}intercept\PYZus{}reps} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{empty}\PY{p}{(}\PY{n}{size}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Generate replicates}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{size}\PY{p}{)}\PY{p}{:}
+                \PY{n}{bs\PYZus{}inds} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{choice}\PY{p}{(}\PY{n}{inds}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{inds}\PY{p}{)}\PY{p}{)}
+                \PY{n}{bs\PYZus{}x}\PY{p}{,} \PY{n}{bs\PYZus{}y} \PY{o}{=} \PY{n}{x}\PY{p}{[}\PY{n}{bs\PYZus{}inds}\PY{p}{]}\PY{p}{,} \PY{n}{y}\PY{p}{[}\PY{n}{bs\PYZus{}inds}\PY{p}{]}
+                \PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,} \PY{n}{bs\PYZus{}intercept\PYZus{}reps}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{polyfit}\PY{p}{(}\PY{n}{bs\PYZus{}x}\PY{p}{,} \PY{n}{bs\PYZus{}y}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+        
+            \PY{k}{return} \PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{n}{bs\PYZus{}intercept\PYZus{}reps}
+        
+        \PY{c+c1}{\PYZsh{} Generate replicates of slope and intercept using pairs bootstrap}
+        \PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{n}{bs\PYZus{}intercept\PYZus{}reps} \PY{o}{=} \PY{n}{draw\PYZus{}bs\PYZus{}pairs\PYZus{}linreg}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{1000}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Compute and print 95\PYZpc{} CI for slope}
+        \PY{k}{print}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{percentile}\PY{p}{(}\PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{p}{[}\PY{l+m+mf}{2.5}\PY{p}{,} \PY{l+m+mf}{97.5}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Plot the histogram}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{bs\PYZus{}slope\PYZus{}reps}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{normed}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{slope}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-[-0.20051359 -0.1864092 ]
-
-    \end{Verbatim}
-
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_167_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
     Hypothesis Testing
 
      Null Hypothesis- There is no significant difference between
@@ -3358,66 +3138,61 @@ EXT\_SOURCE\_1 and EXT\_SOURCE\_2 mean on 'Ability to Repay Loan' HA :
 μEXT\_SOURCE\_1−μEXT\_SOURCE\_2 != 0
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}113}]:} \PY{k}{def} \PY{n+nf}{permutation\PYZus{}sample}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{:}
-              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Generate a permutation sample from two data sets.\PYZdq{}\PYZdq{}\PYZdq{}}
-          
-              \PY{c+c1}{\PYZsh{} Concatenate the data sets: data}
-              \PY{n}{data} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{)}
-          
-              \PY{c+c1}{\PYZsh{} Permute the concatenated array: permuted\PYZus{}data}
-              \PY{n}{permuted\PYZus{}data} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{permutation}\PY{p}{(}\PY{n}{data}\PY{p}{)}
-          
-              \PY{c+c1}{\PYZsh{} Split the permuted array into two: perm\PYZus{}sample\PYZus{}1, perm\PYZus{}sample\PYZus{}2}
-              \PY{n}{perm\PYZus{}sample\PYZus{}1} \PY{o}{=} \PY{n}{permuted\PYZus{}data}\PY{p}{[}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data1}\PY{p}{)}\PY{p}{]}
-              \PY{n}{perm\PYZus{}sample\PYZus{}2} \PY{o}{=} \PY{n}{permuted\PYZus{}data}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data1}\PY{p}{)}\PY{p}{:}\PY{p}{]}
-          
-              \PY{k}{return} \PY{n}{perm\PYZus{}sample\PYZus{}1}\PY{p}{,} \PY{n}{perm\PYZus{}sample\PYZus{}2}
-          
-          \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{:}
-              \PY{c+c1}{\PYZsh{} Generate permutation samples}
-              \PY{n}{perm\PYZus{}sample\PYZus{}1}\PY{p}{,} \PY{n}{perm\PYZus{}sample\PYZus{}2} \PY{o}{=} \PY{n}{permutation\PYZus{}sample}\PY{p}{(}
-                                              \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-          
-              \PY{c+c1}{\PYZsh{} Compute and plot ECDF from permutation sample 1 }
-              \PY{n}{x1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{perm\PYZus{}sample\PYZus{}1}\PY{p}{)}
-              \PY{n}{y1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x1}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x1}\PY{p}{)}\PY{p}{)} 
-              
-              \PY{c+c1}{\PYZsh{} Compute and plot ECDF from permutation sample 2}
-              \PY{n}{x2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{perm\PYZus{}sample\PYZus{}2}\PY{p}{)}
-              \PY{n}{y2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x2}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x2}\PY{p}{)}\PY{p}{)}
-          
-          
-              \PY{c+c1}{\PYZsh{} Plot ECDFs of permutation sample}
-              \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x1}\PY{p}{,} \PY{n}{y1}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
-                           \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.02}\PY{p}{)}
-              \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x2}\PY{p}{,} \PY{n}{y2}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
-                           \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.02}\PY{p}{)}
-          \PY{c+c1}{\PYZsh{} Compute and plot ECDF from original \PYZsq{}registered\PYZsq{}}
-          \PY{n}{x11} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-          \PY{n}{y11} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x11}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x11}\PY{p}{)}\PY{p}{)} 
-          
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x11}\PY{p}{,} \PY{n}{y11}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Compute and plot ECDF from original \PYZsq{}casual\PYZsq{}}
-          \PY{n}{x22} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-          \PY{n}{y22} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x22}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x22}\PY{p}{)}\PY{p}{)} 
-          
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x22}\PY{p}{,} \PY{n}{y22}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{c+c1}{\PYZsh{} Make margins and label axes}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{margins}\PY{p}{(}\PY{l+m+mf}{0.02}\PY{p}{)}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{External Data Source Influence}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          
-          \PY{c+c1}{\PYZsh{} Show the plot}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{permutation\PYZus{}sample}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Generate a permutation sample from two data sets.\PYZdq{}\PYZdq{}\PYZdq{}}
+        
+            \PY{c+c1}{\PYZsh{} Concatenate the data sets: data}
+            \PY{n}{data} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{concatenate}\PY{p}{(}\PY{p}{(}\PY{n}{data1}\PY{p}{,} \PY{n}{data2}\PY{p}{)}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Permute the concatenated array: permuted\PYZus{}data}
+            \PY{n}{permuted\PYZus{}data} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{permutation}\PY{p}{(}\PY{n}{data}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Split the permuted array into two: perm\PYZus{}sample\PYZus{}1, perm\PYZus{}sample\PYZus{}2}
+            \PY{n}{perm\PYZus{}sample\PYZus{}1} \PY{o}{=} \PY{n}{permuted\PYZus{}data}\PY{p}{[}\PY{p}{:}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data1}\PY{p}{)}\PY{p}{]}
+            \PY{n}{perm\PYZus{}sample\PYZus{}2} \PY{o}{=} \PY{n}{permuted\PYZus{}data}\PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n}{data1}\PY{p}{)}\PY{p}{:}\PY{p}{]}
+        
+            \PY{k}{return} \PY{n}{perm\PYZus{}sample\PYZus{}1}\PY{p}{,} \PY{n}{perm\PYZus{}sample\PYZus{}2}
+        
+        \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Generate permutation samples}
+            \PY{n}{perm\PYZus{}sample\PYZus{}1}\PY{p}{,} \PY{n}{perm\PYZus{}sample\PYZus{}2} \PY{o}{=} \PY{n}{permutation\PYZus{}sample}\PY{p}{(}
+                                            \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Compute and plot ECDF from permutation sample 1 }
+            \PY{n}{x1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{perm\PYZus{}sample\PYZus{}1}\PY{p}{)}
+            \PY{n}{y1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x1}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x1}\PY{p}{)}\PY{p}{)} 
+            
+            \PY{c+c1}{\PYZsh{} Compute and plot ECDF from permutation sample 2}
+            \PY{n}{x2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{perm\PYZus{}sample\PYZus{}2}\PY{p}{)}
+            \PY{n}{y2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x2}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x2}\PY{p}{)}\PY{p}{)}
+        
+        
+            \PY{c+c1}{\PYZsh{} Plot ECDFs of permutation sample}
+            \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x1}\PY{p}{,} \PY{n}{y1}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.02}\PY{p}{)}
+            \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x2}\PY{p}{,} \PY{n}{y2}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{none}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                         \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.02}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Compute and plot ECDF from original \PYZsq{}registered\PYZsq{}}
+        \PY{n}{x11} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{y11} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x11}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x11}\PY{p}{)}\PY{p}{)} 
+        
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x11}\PY{p}{,} \PY{n}{y11}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{red}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Compute and plot ECDF from original \PYZsq{}casual\PYZsq{}}
+        \PY{n}{x22} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sort}\PY{p}{(}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{EXT\PYZus{}SOURCE\PYZus{}2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+        \PY{n}{y22} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x22}\PY{p}{)}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{n+nb}{float}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x22}\PY{p}{)}\PY{p}{)} 
+        
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x22}\PY{p}{,} \PY{n}{y22}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} Make margins and label axes}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{margins}\PY{p}{(}\PY{l+m+mf}{0.02}\PY{p}{)}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{External Data Source Influence}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ECDF}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Show the plot}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_170_0.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
      Permutation samples ECDFs overlap and give a purple haze. Few of the
 ECDFs from the permutation samples overlap with the observed External
 Source Data1 data towards right of the graph \& even fewer overlap
@@ -3425,6 +3200,413 @@ towards left, suggesting that the hypothesis is not commensurate with
 the data. External Source Data1 \& External Source Data2 are not
 identically distributed and do not influence data in similar way. So
 Null Hypothesis is rejected.
+
+    In Depth Analysis
+
+    Imbalanced datasets
+
+    Here I will work on some techniques to handle highly unbalanced
+datasets, with a focus on resampling. The Home Credit Risk Prediction
+competition, is a classic problem of unbalanced classes, since Credit
+Loan in risk can be considered unusual cases when considering all
+clients. Other classic examples of unbalanced classes are the detection
+of financial fraud and attacks on computer networks.
+
+Let's see how unbalanced the dataset is:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
+        
+        \PY{n}{df\PYZus{}train} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{application\PYZus{}train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{target\PYZus{}count} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class 0:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{target\PYZus{}count}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Class 1:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{target\PYZus{}count}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Proportion:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{target\PYZus{}count}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{/} \PY{n}{target\PYZus{}count}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{: 1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{n}{target\PYZus{}count}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Count (target)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+
+
+    Resampling
+
+    Resampling
+
+Resampling is the method that consists of drawing repeated samples from
+the original data samples. The method of Resampling is a nonparametric
+method of statistical inference. In other words, the method of
+resampling does not involve the utilization of the generic distribution
+tables (for example, normal distribution tables) in order to compute
+approximate p probability values.
+
+Resampling involves the selection of randomized cases with replacement
+from the original data sample in such a manner that each number of the
+sample drawn has a number of cases that are similar to the original data
+sample. Due to replacement, the drawn number of samples that are used by
+the method of resampling consists of repetitive cases. Courtesy:
+http://www.statisticssolutions.com/sample-size-calculation-and-sample-size-justification-resampling/
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} Class count}
+        \PY{n}{count\PYZus{}class\PYZus{}0}\PY{p}{,} \PY{n}{count\PYZus{}class\PYZus{}1} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{o}{.}\PY{n}{TARGET}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{} Divide by class}
+        \PY{n}{df\PYZus{}class\PYZus{}0} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{]}
+        \PY{n}{df\PYZus{}class\PYZus{}1} \PY{o}{=} \PY{n}{df\PYZus{}train}\PY{p}{[}\PY{n}{df\PYZus{}train}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+
+
+    Random under-sampling
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{df\PYZus{}class\PYZus{}0\PYZus{}under} \PY{o}{=} \PY{n}{df\PYZus{}class\PYZus{}0}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{count\PYZus{}class\PYZus{}1}\PY{p}{)}
+        \PY{n}{df\PYZus{}test\PYZus{}under} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{df\PYZus{}class\PYZus{}0\PYZus{}under}\PY{p}{,} \PY{n}{df\PYZus{}class\PYZus{}1}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Random under\PYZhy{}sampling:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{n}{df\PYZus{}test\PYZus{}under}\PY{o}{.}\PY{n}{TARGET}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        
+        \PY{n}{df\PYZus{}test\PYZus{}under}\PY{o}{.}\PY{n}{TARGET}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Count (TARGET)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    Random over-sampling
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{df\PYZus{}class\PYZus{}1\PYZus{}over} \PY{o}{=} \PY{n}{df\PYZus{}class\PYZus{}1}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n}{count\PYZus{}class\PYZus{}0}\PY{p}{,} \PY{n}{replace}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+        \PY{n}{df\PYZus{}test\PYZus{}over} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{df\PYZus{}class\PYZus{}0}\PY{p}{,} \PY{n}{df\PYZus{}class\PYZus{}1\PYZus{}over}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Random over\PYZhy{}sampling:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{n}{df\PYZus{}test\PYZus{}over}\PY{o}{.}\PY{n}{TARGET}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        
+        \PY{n}{df\PYZus{}test\PYZus{}over}\PY{o}{.}\PY{n}{TARGET}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Count (TARGET)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    Python imbalanced-learn module
+
+    This is the Python package to deal with Imbalance Class Problem.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{import} \PY{n+nn}{imblearn}
+\end{Verbatim}
+
+
+    For ease of visualization, let's create a small unbalanced sample
+dataset using the make\_classification method:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.datasets} \PY{k+kn}{import} \PY{n}{make\PYZus{}classification}
+        
+        \PY{n}{X}\PY{p}{,} \PY{n}{y} \PY{o}{=} \PY{n}{make\PYZus{}classification}\PY{p}{(}
+            \PY{n}{n\PYZus{}classes}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{class\PYZus{}sep}\PY{o}{=}\PY{l+m+mf}{1.5}\PY{p}{,} \PY{n}{weights}\PY{o}{=}\PY{p}{[}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{l+m+mf}{0.1}\PY{p}{]}\PY{p}{,}
+            \PY{n}{n\PYZus{}informative}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{n\PYZus{}redundant}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{flip\PYZus{}y}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,}
+            \PY{n}{n\PYZus{}features}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{n\PYZus{}clusters\PYZus{}per\PYZus{}class}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+            \PY{n}{n\PYZus{}samples}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{10}
+        \PY{p}{)}
+        
+        \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+        \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{TARGET}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{y}
+        \PY{n}{df}\PY{o}{.}\PY{n}{TARGET}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bar}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{title}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Count (TARGET)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    We will also create a 2-dimensional plot function, plot\_2d\_space, to
+see the data distribution:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Classes}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}   
+            \PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}1F77B4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsh{}FF7F0E}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+            \PY{n}{markers} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{o}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+            \PY{k}{for} \PY{n}{l}\PY{p}{,} \PY{n}{c}\PY{p}{,} \PY{n}{m} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{,} \PY{n}{colors}\PY{p}{,} \PY{n}{markers}\PY{p}{)}\PY{p}{:}
+                \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}
+                    \PY{n}{X}\PY{p}{[}\PY{n}{y}\PY{o}{==}\PY{n}{l}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                    \PY{n}{X}\PY{p}{[}\PY{n}{y}\PY{o}{==}\PY{n}{l}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+                    \PY{n}{c}\PY{o}{=}\PY{n}{c}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{n}{l}\PY{p}{,} \PY{n}{marker}\PY{o}{=}\PY{n}{m}
+                \PY{p}{)}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{n}{label}\PY{p}{)}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper right}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    Because the dataset has many dimensions (features) and our graphs will
+be 2D, we will reduce the size of the dataset using Principal Component
+Analysis (PCA):
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.decomposition} \PY{k+kn}{import} \PY{n}{PCA}
+        
+        \PY{n}{pca} \PY{o}{=} \PY{n}{PCA}\PY{p}{(}\PY{n}{n\PYZus{}components}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n}{X} \PY{o}{=} \PY{n}{pca}\PY{o}{.}\PY{n}{fit\PYZus{}transform}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Imbalanced dataset (2 PCA components)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    Random under-sampling and over-sampling with imbalanced-learn
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{imblearn.under\PYZus{}sampling} \PY{k+kn}{import} \PY{n}{RandomUnderSampler}
+        
+        \PY{n}{rus} \PY{o}{=} \PY{n}{RandomUnderSampler}\PY{p}{(}\PY{n}{return\PYZus{}indices}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)}
+        \PY{n}{X\PYZus{}rus}\PY{p}{,} \PY{n}{y\PYZus{}rus}\PY{p}{,} \PY{n}{id\PYZus{}rus} \PY{o}{=} \PY{n}{rus}\PY{o}{.}\PY{n}{fit\PYZus{}sample}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+        
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Removed indexes:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{id\PYZus{}rus}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X\PYZus{}rus}\PY{p}{,} \PY{n}{y\PYZus{}rus}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Random under\PYZhy{}sampling}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{imblearn.over\PYZus{}sampling} \PY{k+kn}{import} \PY{n}{RandomOverSampler}
+        
+        \PY{n}{ros} \PY{o}{=} \PY{n}{RandomOverSampler}\PY{p}{(}\PY{p}{)}
+        \PY{n}{X\PYZus{}ros}\PY{p}{,} \PY{n}{y\PYZus{}ros} \PY{o}{=} \PY{n}{ros}\PY{o}{.}\PY{n}{fit\PYZus{}sample}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+        
+        \PY{k}{print}\PY{p}{(}\PY{n}{X\PYZus{}ros}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{\PYZhy{}} \PY{n}{X}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{new random picked points}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X\PYZus{}ros}\PY{p}{,} \PY{n}{y\PYZus{}ros}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Random over\PYZhy{}sampling}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    Under-sampling: Tomek links
+
+    Tomek links remove unwanted overlap between classes where majority class
+links are removed until all minimally distanced nearest neighbor pairs
+are of the same class. courtesy:
+https://en.wikipedia.org/wiki/Oversampling\_and\_undersampling\_in\_data\_analysis
+
+    In the code below, we'll use ratio='majority' to resample the majority
+class.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{imblearn.under\PYZus{}sampling} \PY{k+kn}{import} \PY{n}{TomekLinks}
+        
+        \PY{n}{tl} \PY{o}{=} \PY{n}{TomekLinks}\PY{p}{(}\PY{n}{return\PYZus{}indices}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{ratio}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{majority}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}tl}\PY{p}{,} \PY{n}{y\PYZus{}tl}\PY{p}{,} \PY{n}{id\PYZus{}tl} \PY{o}{=} \PY{n}{tl}\PY{o}{.}\PY{n}{fit\PYZus{}sample}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+        
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Removed indexes:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{id\PYZus{}tl}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X\PYZus{}tl}\PY{p}{,} \PY{n}{y\PYZus{}tl}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Tomek links under\PYZhy{}sampling}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    Under-sampling: Cluster Centroids
+
+    Cluster centroids is a method that replaces cluster of samples by the
+cluster centroid of a K-means algorithm, where the number of clusters is
+set by the level of undersampling. courtesy:
+https://en.wikipedia.org/wiki/Oversampling\_and\_undersampling\_in\_data\_analysis
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{imblearn.under\PYZus{}sampling} \PY{k+kn}{import} \PY{n}{ClusterCentroids}
+        
+        \PY{n}{cc} \PY{o}{=} \PY{n}{ClusterCentroids}\PY{p}{(}\PY{n}{ratio}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{:} \PY{l+m+mi}{10}\PY{p}{\PYZcb{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}cc}\PY{p}{,} \PY{n}{y\PYZus{}cc} \PY{o}{=} \PY{n}{cc}\PY{o}{.}\PY{n}{fit\PYZus{}sample}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X\PYZus{}cc}\PY{p}{,} \PY{n}{y\PYZus{}cc}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cluster Centroids under\PYZhy{}sampling}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    Over-sampling: SMOTE
+
+    There are a number of methods available to oversample a dataset used in
+a typical classification problem (using a classification algorithm to
+classify a set of images, given a labelled training set of images). The
+most common technique is known as SMOTE: Synthetic Minority
+Over-sampling Technique.
+
+    We'll use ratio='minority' to resample the minority class.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{imblearn.over\PYZus{}sampling} \PY{k+kn}{import} \PY{n}{SMOTE}
+        
+        \PY{n}{smote} \PY{o}{=} \PY{n}{SMOTE}\PY{p}{(}\PY{n}{ratio}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{minority}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}sm}\PY{p}{,} \PY{n}{y\PYZus{}sm} \PY{o}{=} \PY{n}{smote}\PY{o}{.}\PY{n}{fit\PYZus{}sample}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X\PYZus{}sm}\PY{p}{,} \PY{n}{y\PYZus{}sm}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SMOTE over\PYZhy{}sampling}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    Over-sampling followed by under-sampling
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{imblearn.combine} \PY{k+kn}{import} \PY{n}{SMOTETomek}
+        
+        \PY{n}{smt} \PY{o}{=} \PY{n}{SMOTETomek}\PY{p}{(}\PY{n}{ratio}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{auto}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{X\PYZus{}smt}\PY{p}{,} \PY{n}{y\PYZus{}smt} \PY{o}{=} \PY{n}{smt}\PY{o}{.}\PY{n}{fit\PYZus{}sample}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+        
+        \PY{n}{plot\PYZus{}2d\PYZus{}space}\PY{p}{(}\PY{n}{X\PYZus{}smt}\PY{p}{,} \PY{n}{y\PYZus{}smt}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SMOTE + Tomek links}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    Deploying Machine Learning Model over Resampled Dataset
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{} Deploying Logistic Regression}
+        \PY{c+c1}{\PYZsh{}Splitting the dataset}
+        \PY{c+c1}{\PYZsh{}Keep the following 6 features (variables) which are important}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{preprocessing}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt} 
+        \PY{n}{plt}\PY{o}{.}\PY{n}{rc}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{font}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{size}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.linear\PYZus{}model} \PY{k+kn}{import} \PY{n}{LogisticRegression}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.cross\PYZus{}validation} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+        
+        \PY{c+c1}{\PYZsh{} X = df\PYZus{}train.iloc[:, :\PYZhy{}1]}
+        \PY{c+c1}{\PYZsh{} y = df\PYZus{}train.iloc[:,\PYZhy{}1]}
+        \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X\PYZus{}smt}\PY{p}{,} \PY{n}{y\PYZus{}smt}\PY{p}{,} \PY{n}{test\PYZus{}size}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{metrics}
+        \PY{n}{logreg} \PY{o}{=} \PY{n}{LogisticRegression}\PY{p}{(}\PY{p}{)}
+        \PY{n}{logreg}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{logreg}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Accuracy of logistic regression classifier on test set: \PYZob{}:.2f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{logreg}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{classification\PYZus{}report}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}
+        \PY{k}{print}\PY{p}{(}\PY{n}{classification\PYZus{}report}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{confusion\PYZus{}matrix}
+        \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k+kn}{as} \PY{n+nn}{sns}
+        \PY{n}{mat} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}
+        \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{mat}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{square}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cbar}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{true label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{predicted label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    Random Forest Classifier
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k}{def} \PY{n+nf}{visualize\PYZus{}classifier}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n+nb+bp}{None}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{rainbow}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+            \PY{n}{ax} \PY{o}{=} \PY{n}{ax} \PY{o+ow}{or} \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} Plot the training points}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{X}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{c}\PY{o}{=}\PY{n}{y}\PY{p}{,} \PY{n}{s}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{n}{cmap}\PY{p}{,}
+                       \PY{n}{clim}\PY{o}{=}\PY{p}{(}\PY{n}{y}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{y}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{zorder}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tight}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{ax}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{off}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+            \PY{n}{xlim} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}xlim}\PY{p}{(}\PY{p}{)}
+            \PY{n}{ylim} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{get\PYZus{}ylim}\PY{p}{(}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{} fit the estimator}
+            \PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+            \PY{n}{xx}\PY{p}{,} \PY{n}{yy} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{meshgrid}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{*}\PY{n}{xlim}\PY{p}{,} \PY{n}{num}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}\PY{p}{,}
+                                 \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{*}\PY{n}{ylim}\PY{p}{,} \PY{n}{num}\PY{o}{=}\PY{l+m+mi}{200}\PY{p}{)}\PY{p}{)}
+            \PY{n}{Z} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{c\PYZus{}}\PY{p}{[}\PY{n}{xx}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{yy}\PY{o}{.}\PY{n}{ravel}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{xx}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Create a color plot with the results}
+            \PY{n}{n\PYZus{}classes} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{n}{y}\PY{p}{)}\PY{p}{)}
+            \PY{n}{contours} \PY{o}{=} \PY{n}{ax}\PY{o}{.}\PY{n}{contourf}\PY{p}{(}\PY{n}{xx}\PY{p}{,} \PY{n}{yy}\PY{p}{,} \PY{n}{Z}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.3}\PY{p}{,}
+                                   \PY{n}{levels}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{arange}\PY{p}{(}\PY{n}{n\PYZus{}classes} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mf}{0.5}\PY{p}{,}
+                                   \PY{n}{cmap}\PY{o}{=}\PY{n}{cmap}\PY{p}{,} \PY{n}{clim}\PY{o}{=}\PY{p}{(}\PY{n}{y}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{y}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+                                   \PY{n}{zorder}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+        
+            \PY{n}{ax}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{xlim}\PY{o}{=}\PY{n}{xlim}\PY{p}{,} \PY{n}{ylim}\PY{o}{=}\PY{n}{ylim}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.ensemble} \PY{k+kn}{import} \PY{n}{RandomForestClassifier}
+        
+        \PY{n}{model} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}\PY{n}{n\PYZus{}estimators}\PY{o}{=}\PY{l+m+mi}{100}\PY{p}{,} \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{visualize\PYZus{}classifier}\PY{p}{(}\PY{n}{model}\PY{p}{,} \PY{n}{X\PYZus{}smt}\PY{p}{,} \PY{n}{y\PYZus{}smt}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.cross\PYZus{}validation} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+        
+        \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(}\PY{n}{X\PYZus{}smt}\PY{p}{,} \PY{n}{y\PYZus{}smt}\PY{p}{,}
+                                                        \PY{n}{random\PYZus{}state}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+        \PY{n}{model} \PY{o}{=} \PY{n}{RandomForestClassifier}\PY{p}{(}\PY{n}{n\PYZus{}estimators}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}
+        \PY{n}{model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{)}
+        \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{model}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{classification\PYZus{}report}\PY{p}{,}\PY{n}{accuracy\PYZus{}score}
+        \PY{k}{print}\PY{p}{(}\PY{n}{classification\PYZus{}report}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+        \PY{k}{print}\PY{p}{(}\PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{metrics}
+        \PY{k}{print}\PY{p}{(}\PY{n}{metrics}\PY{o}{.}\PY{n}{classification\PYZus{}report}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{confusion\PYZus{}matrix}
+        \PY{n}{mat} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}
+        \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{mat}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{square}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cbar}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{true label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{predicted label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    Decision Tree Classification
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.cross\PYZus{}validation} \PY{k+kn}{import} \PY{n}{train\PYZus{}test\PYZus{}split}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.tree} \PY{k+kn}{import} \PY{n}{DecisionTreeClassifier}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{accuracy\PYZus{}score}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{tree}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}train}\PY{p}{,} \PY{n}{y\PYZus{}test} \PY{o}{=} \PY{n}{train\PYZus{}test\PYZus{}split}\PY{p}{(} \PY{n}{X\PYZus{}smt}\PY{p}{,} \PY{n}{y\PYZus{}smt}\PY{p}{,} \PY{n}{test\PYZus{}size} \PY{o}{=} \PY{l+m+mf}{0.3}\PY{p}{,} \PY{n}{random\PYZus{}state} \PY{o}{=} \PY{l+m+mi}{100}\PY{p}{)}
+        \PY{n}{clf} \PY{o}{=} \PY{n}{tree}\PY{o}{.}\PY{n}{DecisionTreeClassifier}\PY{p}{(}\PY{p}{)}
+        \PY{n}{clf}\PY{o}{.}\PY{n}{fit}\PY{p}{(}\PY{n}{X}\PY{o}{=}\PY{n}{X\PYZus{}train}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{y\PYZus{}train}\PY{p}{)}
+        \PY{n}{clf}\PY{o}{.}\PY{n}{feature\PYZus{}importances\PYZus{}} \PY{c+c1}{\PYZsh{} [ 1.,  0.,  0.]}
+        \PY{n}{clf}\PY{o}{.}\PY{n}{score}\PY{p}{(}\PY{n}{X}\PY{o}{=}\PY{n}{X\PYZus{}test}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{y\PYZus{}test}\PY{p}{)} \PY{c+c1}{\PYZsh{} 1.0}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{y\PYZus{}pred} \PY{o}{=} \PY{n}{clf}\PY{o}{.}\PY{n}{predict}\PY{p}{(}\PY{n}{X\PYZus{}test}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{c+c1}{\PYZsh{}Accuracy Score}
+        \PY{k}{print} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Accuracy is }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{accuracy\PYZus{}score}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,}\PY{n}{y\PYZus{}pred}\PY{p}{)}\PY{o}{*}\PY{l+m+mi}{100}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn} \PY{k+kn}{import} \PY{n}{metrics}
+        \PY{k}{print}\PY{p}{(}\PY{n}{metrics}\PY{o}{.}\PY{n}{classification\PYZus{}report}\PY{p}{(}\PY{n}{y\PYZus{}pred}\PY{p}{,} \PY{n}{y\PYZus{}test}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{k+kn}{from} \PY{n+nn}{sklearn.metrics} \PY{k+kn}{import} \PY{n}{confusion\PYZus{}matrix}
+        \PY{n}{mat} \PY{o}{=} \PY{n}{confusion\PYZus{}matrix}\PY{p}{(}\PY{n}{y\PYZus{}test}\PY{p}{,} \PY{n}{y\PYZus{}pred}\PY{p}{)}
+        \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{mat}\PY{o}{.}\PY{n}{T}\PY{p}{,} \PY{n}{square}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{annot}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{d}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cbar}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{true label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{predicted label}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
 
 
     % Add a bibliography block to the postdoc
